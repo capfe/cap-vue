@@ -1,0 +1,44 @@
+{
+    "name": "cap",
+    "version": "0.0.1",
+    "description": "create animation platform",
+    "main": "src/index.js",
+    "scripts": {
+        "dev": "webpack-dev-server --inline --hot --no-info"
+    },
+    "dependencies": {
+        "jquery": "^2.2.1",
+        "vue": "^1.0.8",
+        "vue-router": "^0.7.5",
+        "moment": "^2.11.2",
+        "firebase": "~2.4.2",
+        "es6-promise": "~3.1.2"
+    },
+    "devDependencies": {
+        "vue-hot-reload-api": "^1.2.0",
+        "vue-html-loader": "^1.0.0",
+        "vue-loader": "^8.0.0",
+        "vue-style-loader": "^1.0.0",
+
+        "style-loader": "^0.13.0",
+        "raw-loader": "^0.5.1",
+        "url-loader": "^0.5.6",
+        "file-loader": "^0.8.4",
+        "css-loader": "^0.23.1",
+        "less": "^2.5.3",
+        "less-loader": "^2.2.2",
+
+        "babel-core": "^6.1.21",
+        "babel-loader": "^6.1.0",
+        "babel-runtime": "~6.0.0",
+        "babel-plugin-transform-runtime": "^6.1.18",
+        "babel-preset-es2015": "^6.1.18",
+
+        "webpack": "^1.12.2",
+        "webpack-dev-server": "^1.12.0"
+    },
+    "author": "zoumiaojiang@baidu.com",
+    "repository": "empty",
+    "license": "BSD",
+    "readme": "README"
+}
