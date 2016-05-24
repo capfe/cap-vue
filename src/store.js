@@ -14,12 +14,25 @@ import { Promise } from 'es6-promise';
 const store = {};
 
 var data = {
+
     fps: 25,
+
+    // 总帧数
     totalFrame: 100,
+
+    // 当前帧所在索引
     frameIndex: 0,
+
+    // 项目名
     name: 'cap-data1',
+
+    // 时间轴尺度（连续几个单元才显示刻度）
     scale: 5,
+
+    // 时间轴一个单元所占用的像素宽度
     pixel: 20,
+
+    // tab可以管理多个项目， 项目由不同的data组成
     tabs: [
         {
             id: 0,
@@ -32,19 +45,32 @@ var data = {
             id: 1,
             name: '图层11',
             classname: 'test-layer-class1',
+
+            // 状态集合（随数据读写管理）
             status: {
+                // 图层可视
                 view: true,
+
+                // 图层可视反选（只看当前图层）
                 dview: false,
+
+                // 图层锁定
                 lock: false,
+
+                // 图层是否展开
                 layer: true,
-                props: true,
-                position: false,
-                opacity: false,
-                scale: false,
-                rotate: false
+
+                // 图层属性是否展开
+                props: true
             },
+
+            // 父图层id
             parentid: 0,
+
+            // 图层标识颜色
             layerColor: '#893456',
+
+            // 不透明值
             opacity: {
                 fx: "liner",
                 value: 20
@@ -125,7 +151,9 @@ var data = {
             color: {
                 fx: "liner",
                 value: "#fff"
-            }
+            },
+
+            // 可能还有一堆css属性。。
         },
         {
             id: 2,
@@ -137,11 +165,7 @@ var data = {
                 dview: false,
                 lock: false,
                 layer: true,
-                props: true,
-                position: false,
-                opacity: false,
-                scale: false,
-                rotate: false
+                props: true
             },
             parentid: 1,
             opacity: {
@@ -234,11 +258,7 @@ var data = {
                 dview: false,
                 lock: false,
                 layer: false,
-                props: false,
-                position: false,
-                opacity: false,
-                scale: false,
-                rotate: false
+                props: false
             },
             layerColor: '#529862',
             parentid: 2,
