@@ -2,3 +2,9 @@ node_modules
 ._.DS_Store
 .DS_Store
 output
+build/fonts
+build/dist
+npm-debug.log
+selenium-debug.log
+test/unit/coverage
+test/e2e/reports
