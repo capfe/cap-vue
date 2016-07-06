@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" >
         <cap-header></cap-header>
         <cap-siderbar></cap-siderbar>
         <cap-preview></cap-preview>
@@ -13,7 +13,7 @@
     import CapTimeline from './timeline/index.vue';
     import CapPreview from './preview/index.vue';
     import store from 'store/store';
-    import { fetchProject, fetchKeyframes } from 'store/actions';
+    import { fetchProject } from 'store/actions';
 
     export default {
 
@@ -30,14 +30,12 @@
 
         vuex: {
             actions: {
-                fetchProject,
-                fetchKeyframes
+                fetchProject
             }
         },
 
         created () {
             this.fetchProject();
-            this.fetchKeyframes();
         }
     }
 

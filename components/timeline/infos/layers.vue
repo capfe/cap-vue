@@ -49,17 +49,23 @@
 
         computed: {
             sframeIndex () {
-                let fi = this.project.frameIndex;
-                return (new Array(5 - String(fi).length + 1)).join(0) + fi;
+                const fi = this.project.frameIndex;
+                const len = 6 - String(fi).length;
+                const arr = [];
+                for (let i = 0; i < len; i++) {
+                    arr.push(0);
+                }
+
+                return arr.join('') + fi;
             },
 
             time () {
-                let fi = this.project.frameIndex || 0;
-                let fps = this.project.fps || 1;
-                let f = fi % fps;
-                let s = Math.floor(fi / fps) % 60;
-                let m = Math.floor(fi / fps / 60) % 60;
-                let h = Math.floor(fi / fps / 60 /60) % 60;
+                const fi = this.project.frameIndex || 0;
+                const fps = this.project.fps || 1;
+                const f = fi % fps;
+                const s = Math.floor(fi / fps) % 60;
+                const m = Math.floor(fi / fps / 60) % 60;
+                const h = Math.floor(fi / fps / 60 /60) % 60;
 
                 return  h 
                     + ':' + (m < 10 ? ('0' + m) : m)

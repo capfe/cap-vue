@@ -1,15 +1,15 @@
 
 import {
-    FETCH_KEYFRAMES,
-    NEXT_KEYFRAME,
-    PRE_KEYFRAME,
-    ADD_KEYFRAME,
-    REMOVE_KEYFRAME,
-    EMPTY_KEYFRAME,
-    PROP_VALUE_CHANGE
+    KEYFRAMES_FETCH,
+    KEYFRAME_NEXT,
+    KEYFRAME_PRE,
+    KEYFRAME_ADD,
+    KEYFRAME_REMOVE,
+    KEYFRAME_EMPTY,
+    KEYFRAME_VALUE_CHANGE
 } from 'store/mutation-types' 
 
-import project from '../project';
+import project from './project';
 import Vue from 'vue';
 import { cloneObject } from 'lib/utils';
 
@@ -31,12 +31,12 @@ const state = {
  */
 const mutations = {
 
-    [FETCH_KEYFRAMES] (state, keyframes) {
+    [KEYFRAMES_FETCH] (state, keyframes) {
         state.all = keyframes;
     },
 
 
-    [NEXT_KEYFRAME] (state, layerid, prop) {
+    [KEYFRAME_NEXT] (state, layerid, prop) {
         const fi = project.state.common.frameIndex;
         for (let i = fi + 1, len = state.all.length; i <= len; i++) {
             if (state.all[i]
@@ -50,7 +50,7 @@ const mutations = {
     },
 
 
-    [PRE_KEYFRAME] (state, layerid, prop) {
+    [KEYFRAME_PRE] (state, layerid, prop) {
         const fi = project.state.common.frameIndex;
         for (let i = fi - 1; i >= 0; i--) {
             if (state.all[i]
@@ -64,12 +64,12 @@ const mutations = {
     },
 
 
-    [REMOVE_KEYFRAME] (state, layerid, prop) {
+    [KEYFRAME_REMOVE] (state, layerid, prop) {
         Vue.delete(state.all[project.state.common.frameIndex][layerid], prop);
     },
 
 
-    [ADD_KEYFRAME] (state, layer, prop, value, key) {
+    [KEYFRAME_ADD] (state, layer, prop, value, key) {
         const fi = project.state.common.frameIndex;
         const layerid = layer.id;
         const kfs = state.all;
@@ -133,14 +133,14 @@ const mutations = {
     },
 
 
-    [EMPTY_KEYFRAME] (state, layerid, prop) {
+    [KEYFRAME_EMPTY] (state, layerid, prop) {
         const tf = project.state.common.totalFrame;
         for (let i = 0; i <= tf; i++) {
             state.all[i] && state.all[i][layerid] && Vue.delete(state.all[i][layerid], prop);
         }
     },
 
-    [PROP_VALUE_CHANGE] (state, value, layerid, prop, key) {
+    [KEYFRAME_VALUE_CHANGE] (state, value, layerid, prop, key) {
         const fi = project.state.common.frameIndex;
         if (key) {
             state.all[fi][layerid][prop][key].value = value;

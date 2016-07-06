@@ -1,11 +1,38 @@
 <template>
-    <div class="preview">
+    <div class="preview"
+        @dragover="onDragover"
+        @drop="onDrop"
+    >
         <div class="phone">
         </div>
         <div class="toolbar">
         </div>
     </div>
 </template>
+
+<script>
+
+    import $ from 'jquery';
+    import data from 'lib/data';
+
+    export default {
+        name: 'CapPreview',
+
+        methods: {
+
+            onDragover (e) {
+                e.preventDefault();
+            },
+
+            onDrop (e) {
+                const dragElement = data.get('dragElement');
+
+                // TODO: new layer
+                console.log(dragElement);
+            },
+        }
+    }
+</script>
 
 <style lang="less">
     .preview {

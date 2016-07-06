@@ -63,7 +63,6 @@
 
     import PropsInfolayer from './propslayer.vue';
     import {
-        fetchLayer,
         layerShowToggle,
         viewToggle,
         dviewToggle,
@@ -142,7 +141,6 @@
             },
 
             actions: {
-                fetchLayer,
                 layerShowToggle,
                 viewToggle,
                 dviewToggle,

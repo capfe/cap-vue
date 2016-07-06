@@ -5,10 +5,12 @@
                 v-for="tab in tabs"
                 class="timeline-tabs-item"
                 data-id="{{ tab.id }}"
-                v-bind:class="{ 'current': tab.focus }"
-                v-on:click="changeTab"
+                data-index="{{ $index }}"
+                :class="{ 'current': tab.focus }"
+                @click="changeTab(tab.id)"
+                v-show="tab.show"
             >
-                <em class="iconfont" v-on:click="closeTab">&#xe627;</em>
+                <em class="iconfont" @click="close">&#xe627;</em>
                 <span>{{ tab.name }}</span>
             </div>
         </div>
@@ -16,6 +18,8 @@
 </template>
 
 <script>
+
+    import { changeTab, closeTab } from 'store/actions'; 
 
     /**
      * @component
@@ -25,17 +29,27 @@
         name: 'TimelineTabs',
 
         methods: {
-
-            closeTab: function (e) {
-            },
-
-            changeTab: function (e) {
+            close (e) {
+                e.stopPropagation();
+                const index = +(e.target.parentNode.getAttribute('data-index'));
+                let tab = this.tabs[index];
+                if (tab.focus) {
+                    this.closeTab(index);
+                    this.changeTab(this.tabs[index + 1 == this.tabs.length ? 0 : index + 1].id);
+                }
+                else {
+                    this.closeTab(index);
+                }
             }
         },
 
         vuex: {
             getters: {
-                tabs: ({ project }) => project.common.tabs
+                tabs: ({ project }) => project.tabs
+            },
+            actions: {
+                changeTab,
+                closeTab
             }
         }
     }
@@ -59,7 +73,7 @@
             border: 1px solid #141414;
             display: inline-block;
             max-width: 250px;
-            min-width: 100px;
+            min-width: 60px;
             text-align: center;
             cursor: pointer;
             padding: 0 10px;
