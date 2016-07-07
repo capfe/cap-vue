@@ -181,6 +181,14 @@
 import CapInput from '../common/Input.vue';
 // import * as actions from 'store/modules/preview/actions';
 // import { getLayer } from 'store/modules/preview/getters';
+import {
+    propValueChange,
+    addKeyframe
+} from 'store/actions';
+
+function hasProp(kfs, fi, layerid, prop) {
+    return kfs[fi] && kfs[fi][layerid] && kfs[fi][layerid][prop];
+}
 
 export default {
     ready () {
@@ -191,134 +199,147 @@ export default {
         CapInput
     },
     methods: {
-
+        setPropValue (category, type, value) {
+            const me = this;
+            hasProp(me.allKeyframes, me.curFrameIndex, me.clid, category)
+                ? me.propValueChange(value, me.clid, category, type)
+                : me.addKeyframe(me.curLayer, category, value, type);
+        }
     },
     computed: {
+        curLayer () {
+            let layers = this.originlayers;
+            let keyframes = this.allKeyframes;
+            let curFrameIndex = this.curFrameIndex;
+            let layer = {};
+            let lid = this.clid;
+            for (var index in layers) {
+                if (lid == layers[+index].id) {
+                    layer = Object.assign({}, layers[+index]);
+                }
+            }
+            if (layer) {
+                for (var i = 0; i <= curFrameIndex; i++) {
+                    let curKeyframe = keyframes[i];
+                    if (!curKeyframe) {
+                        continue;
+                    }
+                    let curLayer = curKeyframe[lid];
+                    if (!curLayer) {
+                        continue;
+                    }
+                    Object.assign(layer, curLayer);
+                }
+            }
+            return layer;
+        },
         x: {
             get () {
-                return this.measureX;
+                return this.curLayer.position.x.value;
             },
             set (value) {
-                this.setMeasureX(value);
+                this.setPropValue('position', 'x', value);
             }
         },
         y: {
             get () {
-                return this.measureY;
+                return this.curLayer.position.y.value;
             },
             set (value) {
-                this.setMeasureY(value);
+                this.setPropValue('position', 'y', value);
             }
         },
         width: {
             get () {
-                return this.measureWidth;
+                return this.curLayer.size.x.value;
             },
             set (value) {
-                this.setMeasureWidth(value);
+                this.setPropValue('size', 'x', value);
             }
         },
         height: {
             get () {
-                return this.measureHeight;
+                return this.curLayer.size.y.value;
             },
             set (value) {
-                this.setMeasureHeight(value);
+                this.setPropValue('size', 'y', value);
             }
         },
         scaleX: {
             get () {
-                return this.measureScaleX;
+                return this.curLayer.scale.x.value;
             },
             set (value) {
-                this.setMeasureScaleX(value);
+                this.setPropValue('scale', 'x', value);
             }
         },
         scaleY: {
             get () {
-                return this.measureScaleY;
+                return this.curLayer.scale.y.value;
             },
             set (value) {
-                this.setMeasureScaleY(value);
+                this.setPropValue('scale', 'y', value);
             }
         },
         rotateX: {
             get () {
-                return this.measureRotateX;
+                return this.curLayer.rotate.x.value;
             },
             set (value) {
-                this.setMeasureRotateX(value);
+                this.setPropValue('rotate', 'x', value);
             }
         },
         rotateY: {
             get () {
-                return this.measureRotateY;
+                return this.curLayer.rotate.y.value;
             },
             set (value) {
-                this.setMeasureRotateY(value);
+                this.setPropValue('rotate', 'y', value);
             }
         },
         rotateZ: {
             get () {
-                return this.measureRotateZ;
+                return this.curLayer.rotate.z.value;
             },
             set (value) {
-                this.setMeasureRotateZ(value);
+                this.setPropValue('rotate', 'z', value);
             }
         },
         perspective: {
             get () {
-                return this.measurePerspective;
+                return 100;
             },
             set (value) {
-                this.setMeasurePerspective(value);
+                // this.setMeasurePerspective(value);
             }
         },
         originX: {
             get () {
-                return this.measureOriginX;
+                return this.curLayer.origin.x.value;
             },
             set (value) {
-                this.setMeasureOriginX(value);
+                this.setPropValue('origin', 'x', value);
             }
         },
         originY: {
             get () {
-                return this.measureOriginY;
+                return this.curLayer.origin.y.value;
             },
             set (value) {
-                this.setMeasureOriginY(value);
+                this.setPropValue('origin', 'y', value);
             }
         }
     },
     vuex: {
         getters: {
-            measureX: state => getLayer(state).measure.x,
-            measureY: state => getLayer(state).measure.y,
-            measureWidth: state => getLayer(state).measure.width,
-            measureHeight: state => getLayer(state).measure.height,
-            measureScaleX: state => getLayer(state).measure.scale.x,
-            measureScaleY: state => getLayer(state).measure.scale.y,
-            measureRotateX: state => getLayer(state).measure.rotate.x,
-            measureRotateY: state => getLayer(state).measure.rotate.y,
-            measureRotateZ: state => getLayer(state).measure.rotate.z,
-            measurePerspective: state => getLayer(state).measure.perspective,
-            measureOriginX: state => getLayer(state).measure.origin.x,
-            measureOriginY: state => getLayer(state).measure.origin.y
+            curFrameIndex: ({ project }) => project.common.frameIndex,
+            originlayers: ({ project }) => project.common.layers,
+            allKeyframes: ({ keyframes }) => keyframes.all,
+            clid: ({ project }) => project.common.clid
         },
         actions: {
-            setMeasureX: actions.setMeasureX,
-            setMeasureY: actions.setMeasureY,
-            setMeasureWidth: actions.setMeasureWidth,
-            setMeasureHeight: actions.setMeasureHeight,
-            setMeasureScaleX: actions.setMeasureScaleX,
-            setMeasureScaleY: actions.setMeasureScaleY,
-            setMeasureRotateX: actions.setMeasureRotateX,
-            setMeasureRotateY: actions.setMeasureRotateY,
-            setMeasureRotateZ: actions.setMeasureRotateZ,
-            setMeasurePerspective: actions.setMeasurePerspective,
-            setMeasureOriginX: actions.setMeasureOriginX,
-            setMeasureOriginY: actions.setMeasureOriginY
+            propValueChange,
+            addKeyframe
         }
     }
 };

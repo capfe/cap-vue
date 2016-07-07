@@ -29,20 +29,20 @@
             <scene></scene>
         </div>
         <div class="cap-inspector-outer">
-            <!-- <inspector></inspector> -->
+            <inspector></inspector>
         </div>
     </div>
 </template>
 
 <script>
 import Scene from './Scene.vue';
-// import Inspector from './Inspector.vue';
+import Inspector from './Inspector.vue';
 
 export default {
     name: 'CapPreview',
     components: {
         Scene,
-        // Inspector
+        Inspector
     },
     vuex: {
         getters: {
