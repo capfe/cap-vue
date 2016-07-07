@@ -20,6 +20,7 @@ export const fetchLayer = ({ dispatch }, index) => {
         dispatch(types.FETCH_LAYER, layer);
     }, index);
 };
+export const setCurLayerId = ({ dispatch }, index) => dispatch(types.SET_CURRENT_LAYER_ID, index);
 
 export const layerShowToggle = ({ dispatch }, index) => dispatch(types.LAYER_SHOW_TOGGLE, index);
 export const viewToggle = ({ dispatch }, index) => dispatch(types.LAYER_VIEW_TOGGLE, index);

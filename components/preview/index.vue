@@ -1,31 +1,53 @@
+<style scoped lang='less'>
+.cap-preview {
+    position: fixed;
+    left: 252px;
+    right: 0;
+    top: 42px;
+    /*bottom: 302px;*/
+    display: flex;
+
+    .cap-scene-outer {
+        overflow: scroll;
+        flex: 1;
+        z-index: 1;
+        background: #262626;
+    }
+    .cap-inspector-outer {
+        flex: 0 0 300px;
+        z-index: 2;
+        height: 100%;
+        background: #141414;
+    }
+}
+
+</style>
+
 <template>
-    <div class="preview">
-        <div class="phone">
+    <div class="cap-preview">
+        <div class="cap-scene-outer">
+            <scene></scene>
         </div>
-        <div class="toolbar">
+        <div class="cap-inspector-outer">
+            <!-- <inspector></inspector> -->
         </div>
     </div>
 </template>
 
-<style lang="less">
-    .preview {
-        position: fixed;
-        left: 252px;
-        right: 0;
-        top: 42px;
-        bottom: 302px;
-        .phone {
-            margin-right: 302px;
-            height: 100%;
-            background: #262626;
-        }
-        .toolbar {
-            width: 300px;
-            position: fixed;
-            right: 0;
-            top: 43px;
-            bottom: 252px;
-            background: #141414;
+<script>
+import Scene from './Scene.vue';
+import Inspector from './Inspector.vue';
+
+export default {
+    name: 'CapPreview',
+    components: {
+        Scene,
+        // Inspector
+    },
+    vuex: {
+        getters: {
+            project: ({ project }) => project.common
         }
     }
-</style>
+};
+</script>

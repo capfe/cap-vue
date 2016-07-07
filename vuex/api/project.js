@@ -43,6 +43,10 @@ const _data = {
             focus: 1
         }
     ],
+
+    // 当前选中图层id
+    clid: 0,
+
     layers: [
         {
             id: 1,
@@ -84,12 +88,12 @@ const _data = {
             position: {
                 x: {
                     fx: "liner",
-                    value: 200.00
+                    value: 0.00
                 },
 
                 y: {
                     fx: "liner",
-                    value: 300.00
+                    value: 0.00
                 },
 
                 z: {
@@ -100,12 +104,12 @@ const _data = {
             scale: {
                 x: {
                     fx: "liner",
-                    value: 2 // 放大2倍, 0.5为缩小2倍
+                    value: 1 // 放大2倍, 0.5为缩小2倍
                 },
 
                 y: {
                     fx: "liner",
-                    value: 0.5
+                    value: 1
                 },
 
                 z: {
@@ -122,29 +126,29 @@ const _data = {
             rotate: {
                 x: {
                     fx: "liner",
-                    value: 30.01
+                    value: 0
                 },
-                
+
                 y: {
                     fx: "liner",
-                    value: 30.78
+                    value: 0
                 },
 
                 z: {
                     fx: "liner",
-                    value: 30.80
+                    value: 0
                 }
             },
 
             skew: {
                 x:{
                     fx: "liner",
-                    value: 30.90
+                    value: 0
                 },
 
                 y: {
                     fx: "liner",
-                    value: 30.89
+                    value: 0
                 },
 
                 z: {
@@ -157,6 +161,30 @@ const _data = {
                 fx: "liner",
                 value: "#fff"
             },
+
+            origin: {
+                x:{
+                    fx: "liner",
+                    value: 0
+                },
+
+                y: {
+                    fx: "liner",
+                    value: 0
+                }
+            },
+
+            size: {
+                x:{
+                    fx: "liner",
+                    value: 100
+                },
+
+                y: {
+                    fx: "liner",
+                    value: 100
+                }
+            }
 
             // 可能还有一堆css属性。。
         },
@@ -181,12 +209,12 @@ const _data = {
             position: {
                 x: {
                     fx: "liner",
-                    value: 200
+                    value: 100
                 },
 
                 y: {
                     fx: "liner",
-                    value: 300
+                    value: 100
                 },
 
                 z: {
@@ -197,7 +225,7 @@ const _data = {
             scale: {
                 x: {
                     fx: "liner",
-                    value: 2 // 放大2倍, 0.5为缩小2倍
+                    value: 0.5 // 放大2倍, 0.5为缩小2倍
                 },
 
                 y: {
@@ -219,12 +247,12 @@ const _data = {
             rotate: {
                 x: {
                     fx: "liner",
-                    value: 30
+                    value: 0
                 },
-                
+
                 y: {
                     fx: "liner",
-                    value: 30
+                    value: 0
                 },
 
                 z: {
@@ -236,12 +264,12 @@ const _data = {
             skew: {
                 x:{
                     fx: "liner",
-                    value: 30
+                    value: 0
                 },
 
                 y: {
                     fx: "liner",
-                    value: 30
+                    value: 0
                 },
 
                 z: {
@@ -253,6 +281,30 @@ const _data = {
             color: {
                 fx: "liner",
                 value: "#fff"
+            },
+
+            origin: {
+                x:{
+                    fx: "liner",
+                    value: 0
+                },
+
+                y: {
+                    fx: "liner",
+                    value: 0
+                }
+            },
+
+            size: {
+                x:{
+                    fx: "liner",
+                    value: 100
+                },
+
+                y: {
+                    fx: "liner",
+                    value: 100
+                }
             }
         },
         {
@@ -280,7 +332,7 @@ const _data = {
 
                 y: {
                     fx: "liner",
-                    value: 300
+                    value: 100
                 },
 
                 z: {
@@ -291,12 +343,12 @@ const _data = {
             scale: {
                 x: {
                     fx: "liner",
-                    value: 2 // 放大2倍, 0.5为缩小2倍
+                    value: 1 // 放大2倍, 0.5为缩小2倍
                 },
 
                 y: {
                     fx: "liner",
-                    value: 0.5
+                    value: 1
                 },
 
                 z: {
@@ -313,29 +365,29 @@ const _data = {
             rotate: {
                 x: {
                     fx: "liner",
-                    value: 30
+                    value: 0
                 },
-                
+
                 y: {
                     fx: "liner",
-                    value: 30
+                    value: 0
                 },
 
                 z: {
                     fx: "liner",
-                    value: 30
+                    value: 0
                 }
             },
 
             skew: {
                 x:{
                     fx: "liner",
-                    value: 30
+                    value: 0
                 },
 
                 y: {
                     fx: "liner",
-                    value: 30
+                    value: 0
                 },
 
                 z: {
@@ -347,6 +399,30 @@ const _data = {
             color: {
                 fx: "liner",
                 value: "#fff"
+            },
+
+            origin: {
+                x:{
+                    fx: "liner",
+                    value: 0
+                },
+
+                y: {
+                    fx: "liner",
+                    value: 0
+                }
+            },
+
+            size: {
+                x:{
+                    fx: "liner",
+                    value: 50
+                },
+
+                y: {
+                    fx: "liner",
+                    value: 50
+                }
             }
         }
     ],

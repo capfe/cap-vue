@@ -10,7 +10,8 @@ import {
     LAYER_NAME_CHANGE,
     PREVIEW_ONE_FRAME,
     LOOP_CONTROL,
-    PLAY_CONTROL
+    PLAY_CONTROL,
+    SET_CURRENT_LAYER_ID
 } from 'store/mutation-types';
 import Vue from 'vue';
 
@@ -37,7 +38,7 @@ const mutations = {
 
     [LAYER_DVIEW_TOGGLE] (state, index) {
         const dview = state.common.layers[index].status.dview;
-        
+
         for (let layer of state.common.layers) {
             if (!dview) {
                 layer.status.view = false;
@@ -93,6 +94,14 @@ const mutations = {
         }
         else {
             state.common.pause = !state.common.pause;
+        }
+    },
+    [SET_CURRENT_LAYER_ID] (statem, index) {
+        if (typeof state.common.clid == 'undefined') {
+            Vue.set(state.common, 'clid', index);
+        }
+        else {
+            state.common.clid = index;
         }
     }
 };
