@@ -12,13 +12,19 @@
         flex: 1;
         z-index: 1;
         background: #262626;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
+    
     .cap-inspector-outer {
         flex: 0 0 300px;
         z-index: 2;
         height: 100%;
         background: #141414;
     }
+
 }
 
 </style>

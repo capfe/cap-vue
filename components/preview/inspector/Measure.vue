@@ -162,7 +162,7 @@
                 </div>
                 <div class='cap-inspector-panel-item cap-inspector-panel-row'>
                     <cap-input
-                        title='x偏移量'
+                        title='y偏移量'
                         :value.sync='originY'
                         type='number'
                         :options-readonly=true
@@ -200,6 +200,7 @@ export default {
     },
     methods: {
         setPropValue (category, type, value) {
+            value = +value;
             const me = this;
             hasProp(me.allKeyframes, me.curFrameIndex, me.clid, category)
                 ? me.propValueChange(value, me.clid, category, type)
