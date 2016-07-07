@@ -36,7 +36,7 @@
 
 <script>
 import Scene from './Scene.vue';
-import Inspector from './Inspector.vue';
+// import Inspector from './Inspector.vue';
 
 export default {
     name: 'CapPreview',
