@@ -4,7 +4,7 @@
     left: 252px;
     right: 0;
     top: 42px;
-    /*bottom: 302px;*/
+    bottom: 302px;
     display: flex;
 
     .cap-scene-outer {

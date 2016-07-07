@@ -5,8 +5,8 @@
     align-items: center;
     justify-content: space-around;
     z-index: 1;
-    height: 100%;
-    width: 100%;
+    height: 200%;
+    width: 200%;
 }
 .cap-scene-container {
     position: relative;
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import $ from 'jquery';
 import CapLayer from './common/Layer.vue';
 // import * as actions from 'models/actions';
 // import { getLayer } from 'models/getters';
@@ -52,6 +53,10 @@ function hasProp(kfs, fi, layerid, prop) {
 
 export default {
     ready () {
+        let el = $(this.$el).parent();
+
+        el.scrollLeft(el.width()/2);
+        el.scrollTop(el.height()/2);
     },
     components: {
         CapLayer
