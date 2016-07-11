@@ -23,7 +23,7 @@
 
 <template>
     <div class='cap-scene'
-        @mousemove='drag | debounce 50'
+        @mousemove='drag'
         @mousedown='dragStart'
         @mouseup='dragEnd'
         >
@@ -80,15 +80,36 @@ export default {
         },
         curLayer: {
             get () {
-
                 let layers = this.originlayers;
-                let clid = this.clid;
+                let keyframes = this.allKeyframes;
+                let curFrameIndex = this.curFrameIndex;
+                let layer = {};
+                let lid = this.clid;
+                if (!lid) {
+                    return null;
+                }
+
                 for (var index in layers) {
-                    if (clid == layers[+index].id) {
-                        return layers[+index];
+                    if (lid == layers[+index].id) {
+                        layer = Object.assign({}, layers[+index]);
                     }
                 }
-                return {};
+
+                if (layer) {
+                    for (var i = 0; i <= curFrameIndex; i++) {
+                        let curKeyframe = keyframes[i];
+                        if (!curKeyframe) {
+                            continue;
+                        }
+                        let curLayer = curKeyframe[lid];
+                        if (!curLayer) {
+                            continue;
+                        }
+                        Object.assign(layer, curLayer);
+                    }
+                }
+
+                return layer;
             }
         }
     },
