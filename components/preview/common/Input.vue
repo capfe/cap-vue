@@ -24,6 +24,8 @@
         :type='type'
         :readonly='readonly'
         v-model='value'
+        @focus='focus'
+        @blur='blur'
     >
     <span v-if='optionsReadonly'>
         {{ opstionsTitle }}
@@ -84,6 +86,25 @@ export default {
             type: Number,
             required: false,
             default: 0
+        },
+        changeName: {
+            type: String,
+            require: false,
+            default: ''
+        }
+    },
+    methods: {
+        focus () {
+            this.$dispatch('willChange', {
+                type: this.changeName,
+                status: true
+            });
+        },
+        blur () {
+            this.$dispatch('willChange', {
+                type: this.changeName,
+                status: false
+            });
         }
     },
     computed: {
@@ -103,7 +124,8 @@ export default {
     },
     data () {
         return {
-            selected: this.selected
+            selected: this.selected,
+            willChange: this.willChange
         }
     }
 };

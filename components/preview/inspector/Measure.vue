@@ -17,6 +17,7 @@
                         title='左'
                         :value.sync='x'
                         type='number'
+                        change-name='x'
                         :options-readonly=true
                         :options-value=0
                         :options='[{title: "px", value: 0},{title: "px1", value: 1}]'
@@ -27,6 +28,7 @@
                         title='上'
                         :value.sync='y'
                         type='number'
+                        change-name='y'
                         :options-readonly=true
                         :options-value=0
                         :options='[{title: "px", value: 0}]'
@@ -44,6 +46,7 @@
                         title='宽度'
                         :value.sync='width'
                         type='number'
+                        change-name='width'
                         :options-readonly=true
                         :options-value=0
                         :options='[{title: "px", value: 0}]'
@@ -54,6 +57,7 @@
                         title='高度'
                         :value.sync='height'
                         type='number'
+                        change-name='height'
                         :options-readonly=true
                         :options-value=0
                         :options='[{title: "px", value: 0}]'
@@ -77,6 +81,7 @@
                         title='宽度'
                         :value.sync='scaleX'
                         type='number'
+                        change-name='scaleX'
                     ></cap-input>
                 </div>
                 <div class='cap-inspector-panel-item'>
@@ -84,6 +89,7 @@
                         title='高度'
                         :value.sync='scaleY'
                         type='number'
+                        change-name='scaleY'
                     ></cap-input>
                 </div>
             </div>
@@ -104,6 +110,7 @@
                         title='x轴'
                         :value.sync='rotateX'
                         type='number'
+                        change-name='rotateX'
                         :options-readonly=true
                         :options-value=2
                         :options='[{title: "°", value: 2}]'
@@ -114,6 +121,7 @@
                         title='y轴'
                         :value.sync='rotateY'
                         type='number'
+                        change-name='rotateY'
                         :options-readonly=true
                         :options-value=2
                         :options='[{title: "°", value: 2}]'
@@ -124,6 +132,7 @@
                         title='z轴'
                         :value.sync='rotateZ'
                         type='number'
+                        change-name='rotateZ'
                         :options-readonly=true
                         :options-value=2
                         :options='[{title: "°", value: 2}]'
@@ -155,6 +164,7 @@
                         title='x偏移量'
                         :value.sync='originX'
                         type='number'
+                        change-name='originX'
                         :options-readonly=true
                         :options-value=0
                         :options='[{title: "px", value: 0}, {title: "%", value: 1}]'
@@ -165,6 +175,7 @@
                         title='y偏移量'
                         :value.sync='originY'
                         type='number'
+                        change-name='originY'
                         :options-readonly=true
                         :options-value=0
                         :options='[{title: "px", value: 0}, {title: "%", value: 1}]'
@@ -200,11 +211,28 @@ export default {
     },
     methods: {
         setPropValue (category, type, value) {
-            value = +value;
             const me = this;
+            if (!me.clid) {
+                return;
+            }
+
+            value = +value;
+
             hasProp(me.allKeyframes, me.curFrameIndex, me.clid, category)
                 ? me.propValueChange(value, me.clid, category, type)
                 : me.addKeyframe(me.curLayer, category, value, type);
+        }
+    },
+    data () {
+        return {
+            changeValueFlag: false,
+            prevLid: -1,
+            willChange: []
+        }
+    },
+    events: {
+        'willChange': function (param) {
+            this.willChange[param.type] = param.status;
         }
     },
     computed: {
@@ -214,11 +242,16 @@ export default {
             let curFrameIndex = this.curFrameIndex;
             let layer = {};
             let lid = this.clid;
+            if (!lid) {
+                return null;
+            }
+
             for (var index in layers) {
                 if (lid == layers[+index].id) {
                     layer = Object.assign({}, layers[+index]);
                 }
             }
+
             if (layer) {
                 for (var i = 0; i <= curFrameIndex; i++) {
                     let curKeyframe = keyframes[i];
@@ -232,77 +265,105 @@ export default {
                     Object.assign(layer, curLayer);
                 }
             }
+
             return layer;
         },
         x: {
             get () {
-                return this.curLayer.position.x.value;
+                return this.curLayer && this.curLayer.position.x.value;
             },
             set (value) {
+                if (this.willChange.x != true) {
+                    return;
+                }
                 this.setPropValue('position', 'x', value);
             }
         },
         y: {
             get () {
-                return this.curLayer.position.y.value;
+                return this.curLayer && this.curLayer.position.y.value;
             },
             set (value) {
+                if (this.willChange.y != true) {
+                    return;
+                }
                 this.setPropValue('position', 'y', value);
             }
         },
         width: {
             get () {
-                return this.curLayer.size.x.value;
+                return this.curLayer && this.curLayer.size.x.value;
             },
             set (value) {
+                if (this.willChange.width != true) {
+                    return;
+                }
                 this.setPropValue('size', 'x', value);
             }
         },
         height: {
             get () {
-                return this.curLayer.size.y.value;
+                return this.curLayer && this.curLayer.size.y.value;
             },
             set (value) {
+                if (this.willChange.height != true) {
+                    return;
+                }
                 this.setPropValue('size', 'y', value);
             }
         },
         scaleX: {
             get () {
-                return this.curLayer.scale.x.value;
+                return this.curLayer && this.curLayer.scale.x.value;
             },
             set (value) {
+                if (this.willChange.scaleX != true) {
+                    return;
+                }
                 this.setPropValue('scale', 'x', value);
             }
         },
         scaleY: {
             get () {
-                return this.curLayer.scale.y.value;
+                return this.curLayer && this.curLayer.scale.y.value;
             },
             set (value) {
+                if (this.willChange.scaleY != true) {
+                    return;
+                }
                 this.setPropValue('scale', 'y', value);
             }
         },
         rotateX: {
             get () {
-                return this.curLayer.rotate.x.value;
+                return this.curLayer && this.curLayer.rotate.x.value;
             },
             set (value) {
+                if (this.willChange.rotateX != true) {
+                    return;
+                }
                 this.setPropValue('rotate', 'x', value);
             }
         },
         rotateY: {
             get () {
-                return this.curLayer.rotate.y.value;
+                return this.curLayer && this.curLayer.rotate.y.value;
             },
             set (value) {
+                if (this.willChange.rotateY != true) {
+                    return;
+                }
                 this.setPropValue('rotate', 'y', value);
             }
         },
         rotateZ: {
             get () {
-                return this.curLayer.rotate.z.value;
+                return this.curLayer && this.curLayer.rotate.z.value;
             },
             set (value) {
+                if (this.willChange.rotateZ != true) {
+                    return;
+                }
                 this.setPropValue('rotate', 'z', value);
             }
         },
@@ -316,17 +377,23 @@ export default {
         },
         originX: {
             get () {
-                return this.curLayer.origin.x.value;
+                return this.curLayer && this.curLayer.origin.x.value;
             },
             set (value) {
+                if (this.willChange.originX != true) {
+                    return;
+                }
                 this.setPropValue('origin', 'x', value);
             }
         },
         originY: {
             get () {
-                return this.curLayer.origin.y.value;
+                return this.curLayer && this.curLayer.origin.y.value;
             },
             set (value) {
+                if (this.willChange.originY != true) {
+                    return;
+                }
                 this.setPropValue('origin', 'y', value);
             }
         }
