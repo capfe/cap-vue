@@ -64,7 +64,7 @@
                     ></cap-input>
                 </div>
             </div>
-            <div class='cap-inspector-panel-row'>
+            <div class='cap-inspector-panel-row' style="display:none;">
                 <div class='cap-inspector-panel-item'>
                     <label>限制比例</label>
                     <input type='checkbox'>
@@ -93,7 +93,7 @@
                     ></cap-input>
                 </div>
             </div>
-            <div class='cap-inspector-panel-row'>
+            <div class='cap-inspector-panel-row' style="display:none;">
                 <div class='cap-inspector-panel-item'>
                     <label>限制比例</label>
                     <input type='checkbox'>
