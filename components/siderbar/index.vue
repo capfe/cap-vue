@@ -1,5 +1,5 @@
 <template>
-    <div class="statics">
+    <div class="statics" @click="blur">
         <div class="statics-wrap">
             <preview></preview>
             <list-table></list-table>
@@ -13,6 +13,8 @@
     import Preview from './preview.vue';
     import ToolBar from './toolbar.vue';
     import ListTable from './listTable.vue';
+    import $ from 'jquery';
+    import { clickBlur } from 'store/actions';
 
     export default {
 
@@ -20,6 +22,27 @@
             Preview,
             ListTable,
             ToolBar
+        },
+
+        methods: {
+            blur (e) {
+                let tar = e.target;
+                while (tar !== this.$el) {
+                    if ($(tar).hasClass('statics-table')) {
+                        return false;
+                    }
+                    else {
+                        tar = tar.parentNode;
+                    }
+                }
+                this.clickBlur();
+            }
+        },
+
+        vuex: {
+            actions: {
+                clickBlur
+            }
         }
     }
 </script>

@@ -10,6 +10,7 @@ import keyframes from './modules/keyframes';
 import base from './modules/base';
 import project from './modules/project';
 import statics from './modules/statics';
+import layers from './modules/layers';
 
 Vue.use(Vuex);
 Vue.config.debug = true;
@@ -20,7 +21,8 @@ export default new Vuex.Store({
         base,
         project,
         keyframes,
-        statics
+        statics,
+        layers
     },
 
     strict: debug,

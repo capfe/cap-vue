@@ -1,5 +1,5 @@
 <template>
-    <div id="app" >
+    <div id="app">
         <cap-header></cap-header>
         <cap-siderbar></cap-siderbar>
         <cap-preview></cap-preview>

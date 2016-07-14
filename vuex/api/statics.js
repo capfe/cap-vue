@@ -5,13 +5,11 @@ import { SERVER } from 'lib/configs';
 
 export default {
 
-    addFold: cb => {
+    addFold: (params, cb) => {
         $.ajax({
             url: `${SERVER.root}/static/addFold`,
             dataType: 'json',
-            data: {
-                parentid: ''
-            },
+            data: params,
             method: 'POST',
             success (data) {
                 if (data.status == 0) {
@@ -29,7 +27,21 @@ export default {
             method: 'POST',
             success (data) {
                 if (data.status == 0) {
-                    cb();
+                    cb(data.data);
+                }
+            }
+        })
+    },
+
+    remove (params, cb) {
+        $.ajax({
+            url: `${SERVER.root}/static/remove`,
+            data: params,
+            dataType: 'json',
+            method: 'POST',
+            success (data) {
+                if (data.status == 0) {
+                    cb(data.data);
                 }
             }
         })

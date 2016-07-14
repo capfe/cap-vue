@@ -26,17 +26,19 @@
                 @click="layerShowToggle(index)"
             >
             </i>
-            <b :style="{ background: layer.layerColor }"></b>
+            <b :style="{ background: layer.tag }"></b>
         </label>
         <label class="timeline-infos-index">
             <i class="iconfont">{{ index + 1 }}</i>
         </label>
         <label class="timeline-infos-name">
             <i class="iconfont">&#xe614;</i>
+            <span v-if="!layer.focus">{{ layer.name }}</span>
             <input 
                 type="text"
                 value="{{ layer.name }}"
                 @keyup="inputChange | debounce 300"
+                v-else
             />
         </label>
         <label class="timeline-infos-rela">
@@ -231,7 +233,7 @@
         }
 
         &-name {
-            width: 120px;
+            width: 100px;
             padding-left: 7px;
             input {
                 border: 0;
@@ -246,13 +248,13 @@
         }
 
         &-rela {
-            width: 200px;
+            width: 120px;
             padding-left: 7px;
             border-right: none;
             .selecter {
                 position: relative;
                 display: inline-block;
-                width: 180px;
+                width: 100px;
                 background: #000;
                 height: 18px;
                 line-height: 18px;
@@ -274,7 +276,7 @@
                 select {
                     opacity: 0;
                     position: absolute;
-                    width: 180px;
+                    width: 100px;
                     z-index: 21;
                 }
             }

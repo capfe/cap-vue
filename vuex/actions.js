@@ -1,44 +1,58 @@
 /**
  * @file actions
- * @author mj(zoumiaojiang@baidu.com)
+ * @author mj(zoumiaojiang@gmail.com)
  */
 
 import project from './api/project';
 import statics from './api/statics';
+import layers from './api/layers';
 import * as types from './mutation-types';
 
-
+export const clickBlur = ({ dispatch }) => {
+    dispatch(types.STATIC_STATUS_CLEAR);
+}
 export const fetchProject = ({ dispatch }) => {
     project.fetchProject(project => {
-        const files = project.files;
-        const folds = project.folds;
         dispatch(types.PROJECT_FETCH, project);
+        dispatch(types.LAYERS_FETCH, project.layers);
         dispatch(types.KEYFRAMES_FETCH, project.keyframes);
-        dispatch(types.STATICS_FETCH, { files, folds });
+        dispatch(types.STATICS_FETCH, project.statics);
     });
 };
 export const loopControl = ({ dispatch }) => dispatch(types.CONTROL_LOOP);
 export const playControl = ({ dispatch }) => dispatch(types.CONTROL_PLAY);
 
-export const staticFoldToggle = ({ dispatch }, params) => dispatch(types.STATIC_FOLD_TOGGLE, params);
+export const staticFoldToggle = ({ dispatch }, params) => {
+    statics.update(params, () => {
+        dispatch(types.STATIC_FOLD_TOGGLE, params);
+    });
+}
 export const staticFileAdd = ({ dispatch }, params) => dispatch(types.STATIC_FILE_ADD, params);
-export const staticFoldAdd = ({ dispatch }) => {
-    statics.addFold(fold => {
-        dispatch(types.STATIC_FOLD_ADD, { fold });
+export const staticFoldAdd = ({ dispatch }, params) => {
+    statics.addFold(params, statics => {
+        dispatch(types.STATIC_FOLD_ADD, { statics });
+    });
+}
+export const staticRemove = ({ dispatch }, params) => {
+    statics.remove(params, statics => {
+        dispatch(types.STATIC_REMOVE, statics);
     });
 }
 export const staticFocus = ({ dispatch }, params) => dispatch(types.STATIC_FOCUS, params);
 export const staticBlur = ({ dispatch }, params) => dispatch(types.STATIC_BLUR, params);
 export const staticHighlight = ({ dispatch }, params) => dispatch(types.STATIC_HIGHLIGHT, params);
 export const staticUpdate = ({ dispatch }, params) => {
-    statics.update(params, () => {
-        dispatch(types.STATIC_UPDATE, params);
+    statics.update(params, (data) => {
+        dispatch(types.STATIC_UPDATE, data);
     });
 }
 
-
 // layer
-export const addLayer = ({ dispatch }) => dispatch(types.LAYER_ADD);
+export const addLayer = ({ dispatch }, params) => {
+    layers.addLayer(params, layers => {
+        dispatch(types.LAYER_ADD, layers);
+    });
+};
 export const removeLayer = ({ dispatch }, id) => dispatch(types.LAYER_REMOVE, id);
 export const layerShowToggle = ({ dispatch }, index) => dispatch(types.LAYER_SHOW_TOGGLE, index);
 export const viewToggle = ({ dispatch }, index) => dispatch(types.LAYER_VIEW_TOGGLE, index);
@@ -54,7 +68,8 @@ export const addTab = ({ dispatch }) => dispatch(types.TAB_ADD);
 export const closeTab = ({ dispatch }, index) => dispatch(types.TAB_CLOSE, index);
 export const changeTab = ({ dispatch }, id) => {
     project.fetchProjectById(id, data => {
-        dispatch(types.TAB_CHANGE, id, data.project);
+        dispatch(types.TAB_CHANGE, data.project);
+        dispatch(types.LAYERS_FETCH, data.layers);
         dispatch(types.KEYFRAMES_FETCH, data.keyframes);
     });
 }

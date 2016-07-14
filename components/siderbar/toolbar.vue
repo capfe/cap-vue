@@ -1,17 +1,28 @@
 <template>
-    <div class="statics-footer">
-        <span class="iconfont" title="新建文件夹"
-            @click="staticFoldAdd"
+    <div
+        class="statics-footer"
+        @click="onclick"
+    >
+        <span
+            class="iconfont"
+            title="新建文件夹"
+            @click="addFold"
         >&#xe634;</span>
-        <span class="iconfont upload" title="导入素材">
+        <span
+            class="iconfont upload"
+            title="导入素材"
+        >
             <input
                 type="file"
                 accept=".psd,.png,.jpg,.gpeg,.gif"
                 @change="fileUpload"
             />
         </span>
-        <!-- <span class="iconfont" title="新建动画">&#xe614;</span> -->
-        <span class="iconfont" title="删除">&#xe608;</span>
+        <span
+            class="iconfont"
+            title="删除"
+            @click="removeItem"
+        >&#xe608;</span>
     </div>
 </template>
 
@@ -20,7 +31,8 @@
 import FileUpload from 'lib/fileUpload';
 import {
     staticFileAdd,
-    staticFoldAdd
+    staticFoldAdd,
+    staticRemove
 } from 'store/actions';
 
     export default {
@@ -28,28 +40,61 @@ import {
         name: 'StaticsToolBar',
 
         methods: {
+
+            onclick (e) {
+                e.stopPropagation();
+            },
+
             fileUpload (e) {
                 const me = this;
+                const parent = this.parent;
                 new FileUpload({
                     url: `${me.server.root}/static/upload`,
                     data: {
-                        image: e.target.files[0]
+                        image: e.target.files[0],
+                        parent
                     },
-                    success (file) {
-                        me.staticFileAdd({ file });
+                    success (statics) {
+                        me.staticFileAdd({ statics });
                     }
                 });
+            },
+
+            addFold (e) {
+                const me = this;
+                const parent = me.parent;
+                const abspath = me.fold.abspath || '/';
+                const ret = confirm(`在[${abspath}]下添加文件夹？`)
+                if (ret) {
+                    me.staticFoldAdd({ parent });
+                }
+            },
+
+            removeItem (e) {
+                const me = this;
+                const type = me.preview.type ? '文件' : '文件夹';
+                const ret = confirm(`删除[${type}] [${me.preview.abspath}]？`);
+                if (ret) {
+                    const preview = me.preview;
+                    const id = preview._id;
+                    const abspath = preview.abspath;
+                    me.staticRemove({ id, abspath });
+                }
             }
         },
 
         vuex: {
             getters: {
-                server: ({ base }) => base.server
+                server: ({ base }) => base.server,
+                parent: ({ statics }) => statics.parent,
+                preview: ({ statics }) => statics.preview,
+                fold: ({ statics }) => statics.fold
             },
 
             actions: {
                 staticFileAdd,
-                staticFoldAdd
+                staticFoldAdd,
+                staticRemove
             }
         }
     };

@@ -5,7 +5,7 @@
     >
         <div
             class="timeline-bars-bar timeline-bars-normal"
-            :style="{ background: layer.layerColor }"
+            :style="{ background: layer.tag }"
         >
         </div>
     </div>

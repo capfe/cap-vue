@@ -19,7 +19,7 @@
         </div>
         <div 
             class="timeline-bars-layer"
-            v-for="layer in project.layers"
+            v-for="layer in layers"
             :class="{ 'first': $index === 0 }"
             :style="{ 'width': width }"
         >
@@ -85,7 +85,8 @@
 
         vuex: {
             getters: {
-                project: ({ project }) => project.common
+                project: ({ project }) => project.common,
+                layers: ({ layers }) => layers.all
             },
 
             actions: {
@@ -119,7 +120,7 @@
     .timeline-line {
         position: absolute;
         border-left: 1px solid #db0e0d;
-        left: 509px;
+        left: 409px;
         top: 34px;
         z-index: 1002;
         bottom: 20px;

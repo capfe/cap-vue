@@ -1,6 +1,6 @@
 /**
  * @file state api
- * @author mj(zoumiaojiang@baidu.com)
+ * @author mj(zoumiaojiang@gmail.com)
  */
 
 // mock project data
@@ -17,26 +17,6 @@ const PROPS = [
 ];
 
 
-/**
- * fetch project state
- *
- * @return {Obejct} project common data
- */
-function proxyProject(data) {
-    let project = Object.assign({}, data);
-    project.layers.map(layer => {
-        layer.highlight = {
-            props: false,
-            layer: false,
-            position: false,
-            opacity: false,
-            scale: false,
-            rotate: false
-        };
-    });
-
-    return project;
-}
 
 /**
  * fetch keyframe state
@@ -88,10 +68,12 @@ export default {
             dataType: 'json',
             method: 'GET',
             success (data) {
-                const project = proxyProject(data);
-                const keyframes = fetchKeyframes(data);
+                const project = data.project;
+                const layers = data.layers;
+                const keyframes = fetchKeyframes(project);
                 return cb({
                     project,
+                    layers,
                     keyframes
                 });
             }
@@ -104,17 +86,17 @@ export default {
             dataType: 'json',
             method: 'GET',
             success (data) {
-                const project = proxyProject(data.project);
+                const project = data.project;
+                const layers = data.layers;
                 const tabs = data.tabs;
                 const keyframes = fetchKeyframes(data.project);
-                const files = data.files;
-                const folds = data.folds;
+                const statics = data.statics;
                 return cb({
                     project,
+                    layers,
                     tabs,
                     keyframes,
-                    files,
-                    folds
+                    statics
                 });
             }
         })

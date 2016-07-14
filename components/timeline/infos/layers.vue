@@ -23,10 +23,10 @@
         </div>
         <div
             class="timeline-infos-layer"
-            v-for="layer of project.layers"
+            v-for="layer of layers"
             v-bind:class="{ 'first': $index === 0 }"
         >
-            <infos-layer :index="$index" :layer="project.layers[$index]"></infos-layer>
+            <infos-layer :index="$index" :layer="layers[$index]"></infos-layer>
         </div>
     </div>
 </template>
@@ -82,7 +82,8 @@
 
         vuex: {
             getters: {
-                project: ({ project }) => project.common
+                project: ({ project }) => project.common,
+                layers: ({ layers }) => layers.all
             }
         }
     }
@@ -98,7 +99,7 @@
         display: inline-block;
     }
     .timeline-infos {
-        width: 500px;
+        width: 400px;
         min-height: 100%;
         float: left;
         border-right: 1px solid #000;
@@ -155,7 +156,7 @@
         &-tag {width: 40px;}
         &-tagicon {width: 16px;}
         &-index {width: 40px;}
-        &-name {width: 120px;}
-        &-rela {width: 200px;}
+        &-name {width: 100px;}
+        &-rela {width: 120px;}
     }
 </style>

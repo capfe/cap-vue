@@ -19,9 +19,11 @@ export const STATIC_FOLD_ADD = 'STATIC_FOLD_ADD';
 export const STATIC_FOCUS = 'STATIC_FOCUS';
 export const STATIC_BLUR = 'STATIC_BLUR';
 export const STATIC_HIGHLIGHT = 'STATIC_HIGHLIGHT';
+export const STATIC_STATUS_CLEAR = 'STATIC_STATUS_CLEAR';
 
 
 // layers
+export const LAYERS_FETCH = 'LAYERS_FETCH';
 export const lAYER_ADD = 'lAYER_ADD';
 export const LAYER_REMOVE = 'LAYER_REMOVE';
 export const LAYER_SHOW_TOGGLE = 'LAYER_SHOW_TOGGLE';

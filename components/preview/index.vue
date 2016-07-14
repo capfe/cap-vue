@@ -15,7 +15,10 @@
     import $ from 'jquery';
     import data from 'lib/data';
 
+    import { addLayer } from 'store/actions';
+
     export default {
+
         name: 'CapPreview',
 
         methods: {
@@ -25,11 +28,20 @@
             },
 
             onDrop (e) {
-                const dragElement = data.get('dragElement');
-
-                // TODO: new layer
-                console.log(dragElement);
+                const dragFile = data.get('dragFile');
+                const sourceid = dragFile.sourceid;
+                const projectid = this.projectid;
+                this.addLayer({ sourceid, projectid });
             },
+        },
+
+        vuex: {
+            getters: {
+                projectid: ({ project }) => project.id
+            },
+            actions: {
+                addLayer
+            }
         }
     }
 </script>

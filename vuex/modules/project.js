@@ -1,13 +1,6 @@
 
 import {
     PROJECT_FETCH,
-    LAYER_VIEW_TOGGLE,
-    LAYER_DVIEW_TOGGLE,
-    LAYER_LOCK_TOGGLE,
-    LAYER_SHOW_TOGGLE,
-    LAYER_PROPS_TOGGLE,
-    LAYER_PARENT_CHANGE,
-    LAYER_NAME_CHANGE,
     KEYFRAME_FETCH,
     CONTROL_LOOP,
     CONTROL_PLAY,
@@ -20,7 +13,8 @@ import Vue from 'vue';
 
 const state = {
     common: {},
-    tabs: []
+    tabs: [],
+    id: ''
 };
 
 
@@ -30,53 +24,11 @@ const mutations = {
     [PROJECT_FETCH] (state, data) {
         state.common = data.project;
         state.tabs = data.tabs;
-    },
-
-    [LAYER_VIEW_TOGGLE] (state, index) {
-        state.common.layers[index].status.view
-            = !state.common.layers[index].status.view;
-        for (let layer of state.common.layers) {
-            layer.status.dview = false;
-        }
-    },
-
-    [LAYER_DVIEW_TOGGLE] (state, index) {
-        const dview = state.common.layers[index].status.dview;
-        
-        for (let layer of state.common.layers) {
-            if (!dview) {
-                layer.status.view = false;
-                layer.status.dview = false;
-            }
-            else {
-                layer.status.view = true;
+        for (let tab of state.tabs) {
+            if (tab.focus) {
+                state.id = tab.id;
             }
         }
-        state.common.layers[index].status.view = true;
-        state.common.layers[index].status.dview = !dview;
-    },
-
-    [LAYER_LOCK_TOGGLE] (state, index) {
-        state.common.layers[index].status.lock
-            = !state.common.layers[index].status.lock;
-    },
-
-    [LAYER_SHOW_TOGGLE] (state, index) {
-        state.common.layers[index].status.layer
-            = !state.common.layers[index].status.layer;
-    },
-
-    [LAYER_PROPS_TOGGLE] (state, index) {
-        state.common.layers[index].status.props
-            = !state.common.layers[index].status.props;
-    },
-
-    [LAYER_PARENT_CHANGE] (state, index, parentid) {
-        state.common.layers[index].parentid = parentid;
-    },
-
-    [LAYER_NAME_CHANGE] (state, index, name) {
-        state.common.layers[index].name = name;
     },
 
     [KEYFRAME_FETCH] (state, index) {
@@ -101,11 +53,12 @@ const mutations = {
         }
     },
 
-    [TAB_CHANGE] (state, id, project) {
+    [TAB_CHANGE] (state, project) {
         state.common = project;
+        state.id = project._id;
         for (let tab of state.tabs) {
             tab.focus = 0;
-            if (tab.id == id) {
+            if (tab.id == state.id) {
                 tab.focus = 1;
             }
         }
