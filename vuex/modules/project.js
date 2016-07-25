@@ -11,7 +11,8 @@ import {
     PREVIEW_ONE_FRAME,
     LOOP_CONTROL,
     PLAY_CONTROL,
-    SET_CURRENT_LAYER_ID
+    SET_CURRENT_LAYER_ID,
+    ORIGIN_VALUE_CHANGE
 } from 'store/mutation-types';
 import Vue from 'vue';
 
@@ -103,6 +104,23 @@ const mutations = {
         else {
             state.common.clid = index;
         }
+    },
+    [ORIGIN_VALUE_CHANGE] (state, value, layerid, prop, key) {
+        if (!layerid) {
+            return;
+        }
+
+        let layers = state.common.layers;
+        let layer = {};
+
+        for (var index in layers) {
+            if (layerid == layers[+index].id) {
+                layer = layers[+index];
+                break;
+            }
+        }
+
+        layer[prop][key].value = value;
     }
 };
 

@@ -184,6 +184,20 @@ const _data = {
                     fx: "liner",
                     value: 100
                 }
+            },
+            border: {
+                width: {
+                    value: 1
+                },
+                radius: {
+                    value: 0
+                },
+                style: {
+                    value: 'solid'
+                },
+                color: {
+                    value: '#000'
+                }
             }
 
             // 可能还有一堆css属性。。
@@ -305,6 +319,20 @@ const _data = {
                     fx: "liner",
                     value: 100
                 }
+            },
+            border: {
+                width: {
+                    value: 1
+                },
+                radius: {
+                    value: 0
+                },
+                style: {
+                    value: 'solid'
+                },
+                color: {
+                    value: '#f00'
+                }
             }
         },
         {
@@ -422,6 +450,20 @@ const _data = {
                 y: {
                     fx: "liner",
                     value: 50
+                }
+            },
+            border: {
+                width: {
+                    value: 1
+                },
+                radius: {
+                    value: 20
+                },
+                style: {
+                    value: 'solid'
+                },
+                color: {
+                    value: '#0f0'
                 }
             }
         }

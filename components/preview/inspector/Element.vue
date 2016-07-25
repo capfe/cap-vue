@@ -242,11 +242,144 @@
 </template>
 
 <script>
-import Input from "../common/Input.vue";
+import CapInput from '../common/Input.vue';
+
+import {
+    propValueChange,
+    addKeyframe,
+    originValueChange
+} from 'store/actions';
+
+function hasProp(kfs, fi, layerid, prop) {
+    return kfs[fi] && kfs[fi][layerid] && kfs[fi][layerid][prop];
+}
 
 export default {
+    ready () {
+
+    },
+    props: ['inspector'],
     components: {
-        capInput: Input
+        CapInput
+    },
+    methods: {
+        setOriginValue (category, type, value) {
+            const me = this;
+            const lid = me.clid;
+
+            if (!lid) {
+                return;
+            }
+
+            if (type != "color") {
+                value = +value;
+            }
+
+            this.originValueChange(value, lid, category, type);
+        }
+    },
+    data () {
+        return {
+            changeValueFlag: false,
+            prevLid: -1,
+            willChange: []
+        }
+    },
+    events: {
+        'willChange': function (param) {
+            this.willChange[param.type] = param.status;
+        }
+    },
+    computed: {
+        curLayer () {
+            let layers = this.originlayers;
+            let keyframes = this.allKeyframes;
+            let curFrameIndex = this.curFrameIndex;
+            let layer = {};
+            let lid = this.clid;
+            if (!lid) {
+                return null;
+            }
+
+            for (var index in layers) {
+                if (lid == layers[+index].id) {
+                    layer = Object.assign({}, layers[+index]);
+                }
+            }
+
+            if (layer) {
+                for (var i = 0; i <= curFrameIndex; i++) {
+                    let curKeyframe = keyframes[i];
+                    if (!curKeyframe) {
+                        continue;
+                    }
+                    let curLayer = curKeyframe[lid];
+                    if (!curLayer) {
+                        continue;
+                    }
+                    Object.assign(layer, curLayer);
+                }
+            }
+
+            return layer;
+        },
+        borderWidth: {
+            get () {
+                return this.curLayer && this.curLayer.border.width.value;
+            },
+            set (value) {
+                if (this.willChange.borderWidth != true) {
+                    return;
+                }
+                this.setOriginValue('border', 'width', value);
+            }
+        },
+        borderRadius: {
+            get () {
+                return this.curLayer && this.curLayer.border.radius.value;
+            },
+            set (value) {
+                if (this.willChange.borderRadius != true) {
+                    return;
+                }
+                this.setOriginValue('border', 'radius', value);
+            }
+        },
+        borderColor: {
+            get () {
+                return this.curLayer && this.curLayer.border.color.value;
+            },
+            set (value) {
+                if (this.willChange.borderColor != true) {
+                    return;
+                }
+                this.setOriginValue('border', 'color', value);
+            }
+        },
+        borderStyle: {
+            get () {
+                return this.curLayer && this.curLayer.border.style.value;
+            },
+            set (value) {
+                if (this.willChange.borderColor != true) {
+                    return;
+                }
+                this.setOriginValue('border', 'style', value);
+            }
+        }
+    },
+    vuex: {
+        getters: {
+            curFrameIndex: ({ project }) => project.common.frameIndex,
+            originlayers: ({ project }) => project.common.layers,
+            allKeyframes: ({ keyframes }) => keyframes.all,
+            clid: ({ project }) => project.common.clid
+        },
+        actions: {
+            propValueChange,
+            addKeyframe,
+            originValueChange
+        }
     }
 };
 </script>

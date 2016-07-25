@@ -1,6 +1,5 @@
 <style lang='less'>
     .cap-layer {
-        border: 1px solid black;
         background-color: #eeff00;
         position: absolute;
         user-select: none;
@@ -41,6 +40,8 @@
             rotate: {{layer.rotate.x.value}} {{layer.rotate.y.value}} {{layer.rotate.z.value}}
             scale: {{layer.scale.x.value}} {{layer.scale.y.value}}
             skew: {{layer.skew.x.value}} {{layer.skew.y.value}}
+            border: {{layer.border.width.value}}px {{layer.border.style.value}} {{layer.border.color.value}}
+            borderRadius: {{layer.border.radius.value}}
         </div>
         <cap-control-layer v-show="lid == this.clid"></cap-control-layer>
         <div class='origin-style' :style='originStyle'></div>
@@ -97,7 +98,11 @@ export default {
                             rotateY(${this.layer.rotate.y.value}deg)
                             rotateZ(${this.layer.rotate.z.value}deg)
                             scaleX(${this.layer.scale.x.value})
-                            scaleY(${this.layer.scale.y.value})`
+                            scaleY(${this.layer.scale.y.value})`,
+                borderWidth: `${this.layer.border.width.value}px`,
+                borderRadius: `${this.layer.border.radius.value}px`,
+                borderColor: `${this.layer.border.color.value}`,
+                borderStyle: `${this.layer.border.style.value}`
 
             }
         },
