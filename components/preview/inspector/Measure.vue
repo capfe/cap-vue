@@ -185,13 +185,11 @@
         </section>
     </div>
 </div>
-
 </template>
 
 <script>
 import CapInput from '../common/Input.vue';
-// import * as actions from 'store/modules/preview/actions';
-// import { getLayer } from 'store/modules/preview/getters';
+
 import {
     propValueChange,
     addKeyframe
