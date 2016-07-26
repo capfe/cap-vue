@@ -1,25 +1,60 @@
 /**
  * @file actions
- * @author mj(zoumiaojiang@baidu.com)
+ * @author mj(zoumiaojiang@gmail.com)
  */
 
 import project from './api/project';
+import statics from './api/statics';
+import layers from './api/layers';
 import * as types from './mutation-types';
 
+export const clickBlur = ({ dispatch }) => {
+    dispatch(types.STATIC_STATUS_CLEAR);
+};
 export const fetchProject = ({ dispatch }) => {
     project.fetchProject(project => {
-        dispatch(types.FETCH_PROJECT, project);
+        dispatch(types.PROJECT_FETCH, project);
+        dispatch(types.LAYERS_FETCH, project.layers);
+        dispatch(types.KEYFRAMES_FETCH, project.keyframes);
+        dispatch(types.STATICS_FETCH, project.statics);
     });
 };
-export const loopControl = ({ dispatch }) => dispatch(types.LOOP_CONTROL);
-export const playControl = ({ dispatch }) => dispatch(types.PLAY_CONTROL);
+export const loopControl = ({ dispatch }) => dispatch(types.CONTROL_LOOP);
+export const playControl = ({ dispatch }) => dispatch(types.CONTROL_PLAY);
+
+export const staticFoldToggle = ({ dispatch }, params) => {
+    statics.update(params, () => {
+        dispatch(types.STATIC_FOLD_TOGGLE, params);
+    });
+}
+export const staticFileAdd = ({ dispatch }, params) => dispatch(types.STATIC_FILE_ADD, params);
+export const staticFoldAdd = ({ dispatch }, params) => {
+    statics.addFold(params, statics => {
+        dispatch(types.STATIC_FOLD_ADD, { statics });
+    });
+}
+export const staticRemove = ({ dispatch }, params) => {
+    statics.remove(params, statics => {
+        dispatch(types.STATIC_REMOVE, statics);
+    });
+}
+export const staticFocus = ({ dispatch }, params) => dispatch(types.STATIC_FOCUS, params);
+export const staticBlur = ({ dispatch }, params) => dispatch(types.STATIC_BLUR, params);
+export const staticHighlight = ({ dispatch }, params) => dispatch(types.STATIC_HIGHLIGHT, params);
+export const staticUpdate = ({ dispatch }, params) => {
+    statics.update(params, (data) => {
+        dispatch(types.STATIC_UPDATE, data);
+    });
+}
 
 // layer
-export const fetchLayer = ({ dispatch }, index) => {
-    project.fetchLayer(layer => {
-        dispatch(types.FETCH_LAYER, layer);
-    }, index);
+export const addLayer = ({ dispatch }, params) => {
+    layers.addLayer(params, layers => {
+        dispatch(types.LAYER_ADD, layers);
+    });
 };
+
+export const removeLayer = ({ dispatch }, id) => dispatch(types.LAYER_REMOVE, id);
 export const setCurLayerId = ({ dispatch }, index) => dispatch(types.SET_CURRENT_LAYER_ID, index);
 export const originValueChange = ({ dispatch }, value, layerid, prop, key) => {
     dispatch(types.ORIGIN_VALUE_CHANGE, value, layerid, prop, key);
@@ -35,28 +70,26 @@ export const layernameChange = ({ dispatch }, index, value) => dispatch(types.LA
 
 
 // Tab
-export const closeTab = ({ dispatch }, id) => dispatch(types.CLOSE_TAB, id);
-export const changeTab = ({ dispatch }, id) => dispatch(types.CHANGE_TAB, id);
-
-
-
-// keyframe
-
-export const fetchKeyframes = ({ dispatch }) => {
-    project.fetchKeyframes(keyframes => {
-        dispatch(types.FETCH_KEYFRAMES, keyframes);
+export const addTab = ({ dispatch }) => dispatch(types.TAB_ADD);
+export const closeTab = ({ dispatch }, index) => dispatch(types.TAB_CLOSE, index);
+export const changeTab = ({ dispatch }, id) => {
+    project.fetchProjectById(id, data => {
+        dispatch(types.TAB_CHANGE, data.project);
+        dispatch(types.LAYERS_FETCH, data.layers);
+        dispatch(types.KEYFRAMES_FETCH, data.keyframes);
     });
-};
+}
 
-export const nextKeyframe = ({ dispatch }, layerid, prop) => dispatch(types.NEXT_KEYFRAME, layerid, prop);
-export const preKeyframe = ({ dispatch }, layerid, prop) => dispatch(types.PRE_KEYFRAME, layerid, prop);
-export const previewOneFrame = ({ dispatch }, index) => dispatch(types.PREVIEW_ONE_FRAME, index);
-export const addKeyframe = ({ dispatch }, layer, prop, value, key) => dispatch(types.ADD_KEYFRAME, layer, prop, value, key);
-export const removeKeyframe = ({dispatch}, layerid, prop) => dispatch(types.REMOVE_KEYFRAME, layerid, prop);
-export const emptyKeyframe = ({ dispatch }, layerid, prop) => dispatch(types.EMPTY_KEYFRAME, layerid, prop);
+// keyframes
+export const nextKeyframe = ({ dispatch }, layerid, prop) => dispatch(types.KEYFRAME_NEXT, layerid, prop);
+export const preKeyframe = ({ dispatch }, layerid, prop) => dispatch(types.KEYFRAME_PRE, layerid, prop);
+export const previewOneFrame = ({ dispatch }, index) => dispatch(types.KEYFRAME_FETCH, index);
+export const addKeyframe = ({ dispatch }, layer, prop, value, key) => dispatch(types.KEYFRAME_ADD, layer, prop, value, key);
+export const removeKeyframe = ({dispatch}, layerid, prop) => dispatch(types.KEYFRAME_REMOVE, layerid, prop);
+export const emptyKeyframe = ({ dispatch }, layerid, prop) => dispatch(types.KEYFRAME_EMPTY, layerid, prop);
 
 
 // PROP
 export const propValueChange = ({ dispatch }, value, layerid, prop, key) => {
-        dispatch(types.PROP_VALUE_CHANGE, value, layerid, prop, key);
+    dispatch(types.KEYFRAME_VALUE_CHANGE, value, layerid, prop, key);
 }

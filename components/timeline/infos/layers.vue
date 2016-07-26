@@ -23,10 +23,10 @@
         </div>
         <div
             class="timeline-infos-layer"
-            v-for="layer of project.layers"
+            v-for="layer of layers"
             v-bind:class="{ 'first': $index === 0 }"
         >
-            <infos-layer :index="$index" :layer="project.layers[$index]"></infos-layer>
+            <infos-layer :index="$index" :layer="layers[$index]"></infos-layer>
         </div>
     </div>
 </template>
@@ -49,17 +49,23 @@
 
         computed: {
             sframeIndex () {
-                let fi = this.project.frameIndex;
-                return (new Array(5 - String(fi).length + 1)).join(0) + fi;
+                const fi = this.project.frameIndex;
+                const len = 6 - String(fi).length;
+                const arr = [];
+                for (let i = 0; i < len; i++) {
+                    arr.push(0);
+                }
+
+                return arr.join('') + fi;
             },
 
             time () {
-                let fi = this.project.frameIndex || 0;
-                let fps = this.project.fps || 1;
-                let f = fi % fps;
-                let s = Math.floor(fi / fps) % 60;
-                let m = Math.floor(fi / fps / 60) % 60;
-                let h = Math.floor(fi / fps / 60 /60) % 60;
+                const fi = this.project.frameIndex || 0;
+                const fps = this.project.fps || 1;
+                const f = fi % fps;
+                const s = Math.floor(fi / fps) % 60;
+                const m = Math.floor(fi / fps / 60) % 60;
+                const h = Math.floor(fi / fps / 60 /60) % 60;
 
                 return  h 
                     + ':' + (m < 10 ? ('0' + m) : m)
@@ -76,7 +82,8 @@
 
         vuex: {
             getters: {
-                project: ({ project }) => project.common
+                project: ({ project }) => project.common,
+                layers: ({ layers }) => layers.all
             }
         }
     }
@@ -92,7 +99,7 @@
         display: inline-block;
     }
     .timeline-infos {
-        width: 500px;
+        width: 400px;
         min-height: 100%;
         float: left;
         border-right: 1px solid #000;
@@ -149,7 +156,7 @@
         &-tag {width: 40px;}
         &-tagicon {width: 16px;}
         &-index {width: 40px;}
-        &-name {width: 120px;}
-        &-rela {width: 200px;}
+        &-name {width: 100px;}
+        &-rela {width: 120px;}
     }
 </style>

@@ -1,16 +1,11 @@
 
 import {
-    FETCH_PROJECT,
-    LAYER_VIEW_TOGGLE,
-    LAYER_DVIEW_TOGGLE,
-    LAYER_LOCK_TOGGLE,
-    LAYER_SHOW_TOGGLE,
-    LAYER_PROPS_TOGGLE,
-    LAYER_PARENT_CHANGE,
-    LAYER_NAME_CHANGE,
-    PREVIEW_ONE_FRAME,
-    LOOP_CONTROL,
-    PLAY_CONTROL,
+    PROJECT_FETCH,
+    KEYFRAME_FETCH,
+    CONTROL_LOOP,
+    CONTROL_PLAY,
+    TAB_CHANGE,
+    TAB_CLOSE,
     SET_CURRENT_LAYER_ID,
     ORIGIN_VALUE_CHANGE
 } from 'store/mutation-types';
@@ -19,68 +14,30 @@ import Vue from 'vue';
 
 
 const state = {
-    common: {}
+    common: {},
+    tabs: [],
+    id: ''
 };
 
 
 
 const mutations = {
-    [FETCH_PROJECT] (state, project) {
-        state.common = project;
-    },
 
-    [LAYER_VIEW_TOGGLE] (state, index) {
-        state.common.layers[index].status.view
-            = !state.common.layers[index].status.view;
-        for (let layer of state.common.layers) {
-            layer.status.dview = false;
-        }
-    },
-
-    [LAYER_DVIEW_TOGGLE] (state, index) {
-        const dview = state.common.layers[index].status.dview;
-
-        for (let layer of state.common.layers) {
-            if (!dview) {
-                layer.status.view = false;
-                layer.status.dview = false;
-            }
-            else {
-                layer.status.view = true;
+    [PROJECT_FETCH] (state, data) {
+        state.common = data.project;
+        state.tabs = data.tabs;
+        for (let tab of state.tabs) {
+            if (tab.focus) {
+                state.id = tab.id;
             }
         }
-        state.common.layers[index].status.view = true;
-        state.common.layers[index].status.dview = !dview;
     },
 
-    [LAYER_LOCK_TOGGLE] (state, index) {
-        state.common.layers[index].status.lock
-            = !state.common.layers[index].status.lock;
-    },
-
-    [LAYER_SHOW_TOGGLE] (state, index) {
-        state.common.layers[index].status.layer
-            = !state.common.layers[index].status.layer;
-    },
-
-    [LAYER_PROPS_TOGGLE] (state, index) {
-        state.common.layers[index].status.props
-            = !state.common.layers[index].status.props;
-    },
-
-    [LAYER_PARENT_CHANGE] (state, index, parentid) {
-        state.common.layers[index].parentid = parentid;
-    },
-
-    [LAYER_NAME_CHANGE] (state, index, name) {
-        state.common.layers[index].name = name;
-    },
-
-    [PREVIEW_ONE_FRAME] (state, index) {
+    [KEYFRAME_FETCH] (state, index) {
         state.common.frameIndex = index;
     },
 
-    [LOOP_CONTROL] (state) {
+    [CONTROL_LOOP] (state) {
         if (typeof state.common.loop == 'undefined') {
             Vue.set(state.common, 'loop', true);
         }
@@ -89,7 +46,7 @@ const mutations = {
         }
     },
 
-    [PLAY_CONTROL] (state) {
+    [CONTROL_PLAY] (state) {
         if (typeof state.common.pause == 'undefined') {
             Vue.set(state.common, 'pause', true);
         }
@@ -97,6 +54,22 @@ const mutations = {
             state.common.pause = !state.common.pause;
         }
     },
+
+    [TAB_CHANGE] (state, project) {
+        state.common = project;
+        state.id = project._id;
+        for (let tab of state.tabs) {
+            tab.focus = 0;
+            if (tab.id == state.id) {
+                tab.focus = 1;
+            }
+        }
+    },
+
+    [TAB_CLOSE] (state, index) {
+        state.tabs[index].show = false;
+    },
+
     [SET_CURRENT_LAYER_ID] (statem, index) {
         if (typeof state.common.clid == 'undefined') {
             Vue.set(state.common, 'clid', index);
@@ -105,6 +78,7 @@ const mutations = {
             state.common.clid = index;
         }
     },
+
     [ORIGIN_VALUE_CHANGE] (state, value, layerid, prop, key) {
         if (!layerid) {
             return;

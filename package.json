@@ -18,7 +18,8 @@
         "vue-router": "^0.7.5",
         "vue-resource": "~0.7.3",
         "es6-promise": "~3.1.2",
-        "vux": "~0.1.1-rc3"
+        "vux": "~0.1.1-rc3",
+        "vue-drag-and-drop": "~2.0.0"
     },
     "devDependencies": {
         "babel-core": "^6.0.0",

@@ -17,7 +17,7 @@
             display: none;
         }
     }
-    
+
     .cap-inspector-outer {
         flex: 0 0 300px;
         z-index: 2;
@@ -30,7 +30,10 @@
 </style>
 
 <template>
-    <div class="cap-preview">
+    <div class="cap-preview"
+        @dragover="onDragover"
+        @drop="onDrop"
+    >
         <div class="cap-scene-outer">
             <scene></scene>
         </div>
@@ -41,6 +44,10 @@
 </template>
 
 <script>
+import $ from 'jquery';
+import data from 'lib/data';
+
+import { addLayer } from 'store/actions';
 import Scene from './Scene.vue';
 import Inspector from './Inspector.vue';
 
@@ -50,9 +57,26 @@ export default {
         Scene,
         Inspector
     },
+    methods: {
+
+        onDragover (e) {
+            e.preventDefault();
+        },
+
+        onDrop (e) {
+            const dragFile = data.get('dragFile');
+            const sourceid = dragFile.sourceid;
+            const projectid = this.projectid;
+            this.addLayer({ sourceid, projectid });
+        }
+    },
     vuex: {
         getters: {
-            project: ({ project }) => project.common
+            project: ({ project }) => project.common,
+            projectid: ({ project }) => project.id
+        },
+        actions: {
+            addLayer
         }
     }
 };

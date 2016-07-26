@@ -80,7 +80,7 @@
                 margin-right: 3px;
             }
             &-label1 {
-                width: 183px;
+                width: 103px;
             }
             &-label2 {
                 color: #319ad2;
@@ -102,7 +102,7 @@
                 color: #319ad2;
             }
             &-label1 {
-                width: 160px;
+                width: 80px;
                 i {
                     margin-right: 5px;
                 }
