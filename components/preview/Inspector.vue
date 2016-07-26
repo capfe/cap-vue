@@ -157,11 +157,12 @@ export default {
                 {
                     title: "效果",
                     name: "Element"
-                },
-                {
-                    title: "排版",
-                    name: "Typesetting"
                 }
+                // ,
+                // {
+                //     title: "排版",
+                //     name: "Typesetting"
+                // }
             ],
             currentView: "Measure"
         }
