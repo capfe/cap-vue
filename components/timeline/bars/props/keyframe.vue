@@ -3,7 +3,7 @@
         class="keyframe"
         v-for="item of newkeyframes"
         :style="{
-            left: item.index * 20 - 6 + 'px'
+            left: item.index * this.project.pixel - 6 + 'px'
         }"
     >
         <point :item="item"></point>
@@ -28,11 +28,10 @@
         },
 
         computed: {
-
             newkeyframes () {
                 const nkfs = [];
                 const kfs = this.keyframes;
-                const lid = this.layer.id;
+                const lid = this.layer._id;
                 kfs.map((item, index) => {
                     if (item) {
                         if (kfs[index][lid] && kfs[index][lid][this.prop]) {

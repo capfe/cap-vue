@@ -13,7 +13,8 @@ const PROPS = [
     'position',
     'scale',
     'rotate',
-    'opacity'
+    'opacity',
+    'skew'
 ];
 
 
@@ -23,15 +24,15 @@ const PROPS = [
  *
  * @return {Array<Object>} keyframe list
  */
-function fetchKeyframes(data) {
+function fetchKeyframes(keyframes) {
 
-    let keyframes = [];
-    data.keyframes.map(_kf => {
+    let newKeyframes = [];
+    keyframes.map(_kf => {
         let obj = {};
         _kf.layers.map(layer => {
-            obj[layer.id] = {};
+            obj[layer.layerid] = {};
             PROPS.map(prop => {
-                layer[prop] && (obj[layer.id][prop] = Object.assign(
+                layer[prop] && (obj[layer.layerid][prop] = Object.assign(
                     {},
                     {
                         type: 1,
@@ -42,10 +43,10 @@ function fetchKeyframes(data) {
                 ));
             });
         });
-        keyframes[_kf.index] = obj;
+        newKeyframes[_kf.index] = obj;
     });
 
-    keyframes.map(kf => {
+    newKeyframes.map(kf => {
         for (let layerid in kf) {
             for (let prop in kf[layerid]) {
                 let rkf = kf[layerid][prop];
@@ -54,7 +55,7 @@ function fetchKeyframes(data) {
         }
     });
 
-    return keyframes;
+    return newKeyframes;
 }
 
 
@@ -70,7 +71,7 @@ export default {
             success (data) {
                 const project = data.project;
                 const layers = data.layers;
-                const keyframes = fetchKeyframes(project);
+                const keyframes = fetchKeyframes(data.keyframes);
                 return cb({
                     project,
                     layers,
@@ -89,7 +90,7 @@ export default {
                 const project = data.project;
                 const layers = data.layers;
                 const tabs = data.tabs;
-                const keyframes = fetchKeyframes(data.project);
+                const keyframes = fetchKeyframes(data.keyframes);
                 const statics = data.statics;
                 return cb({
                     project,
@@ -100,6 +101,28 @@ export default {
                 });
             }
         })
+    },
+
+    fetchKeyframes: keyframes => {
+        return fetchKeyframes(keyframes);
+    },
+
+    preview: (params, cb) => {
+        $.ajax({
+            url: `${SERVER.root}/project/update`,
+            dataType: 'json',
+            data: {
+                id: params.id,
+                field: 'frameIndex',
+                value: params.index
+            },
+            method: 'POST',
+            success (data) {
+                if (data.status == 0) {
+                    cb(data.data);
+                }
+            } 
+        });
     }
 
 };

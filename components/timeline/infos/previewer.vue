@@ -1,17 +1,17 @@
 <template>
     <div class="timeline-player">
-        <span class="iconfont first" @click="previewOneFrame(0)"></span>
+        <span class="iconfont first" @click="preview(0)"></span>
         <span class="iconfont pre" @click="preframe"></span>
         <span class="iconfont" :class="{ play: !project.pause, pause: project.pause }" @click="playOrPause"></span>
         <span class="iconfont next" @click="nextframe"></span>
-        <span class="iconfont last" @click="previewOneFrame(project.totalFrame - 1)"></span>
+        <span class="iconfont last" @click="preview(project.totalFrame - 1)"></span>
         <span class="iconfont" :class="{ loop: project.loop, once: !project.loop }" @click="loopControl"></span>
     </div>
 </template>
 
 <script>
 
-    import { previewOneFrame, loopControl, playControl } from 'store/actions';
+    import { previewOneFrame, loopControl, playControl, framePreview} from 'store/actions';
 
     let timer;
 
@@ -24,7 +24,7 @@
                 const tf = me.project.totalFrame - 1;
                 let index = me.project.frameIndex - 1;
                 index = index < 0 ? (me.project.loop ? tf : 0) : index;
-                me.previewOneFrame(index);
+                me.preview(index);
             },
 
             nextframe () {
@@ -32,21 +32,22 @@
                 const tf = me.project.totalFrame - 1;
                 let index = me.project.frameIndex + 1;
                 index = index > tf ? (me.project.loop ? 0 : tf) : index;
-                me.previewOneFrame(index);
+                me.preview(index);
             },
 
             playOrPause () {
                 const me = this;
+                const id = me.projectid;
                 const tf = me.project.totalFrame;
                 let index = me.project.frameIndex;
                 me.playControl();
                 if (me.project.pause) {
                     timer = setInterval(() => {
-                        me.previewOneFrame(index);
+                        me.previewOneFrame({ index });
                         if (index == tf - 1) {
                             if (!me.project.loop) {
                                 index = 0;
-                                me.previewOneFrame(index);
+                                me.preview(index);
                                 clearInterval(timer);
                                 me.playControl();
                             }
@@ -56,20 +57,31 @@
                     }, 1000 / me.project.fps);
                 }
                 else {
+                    me.preview(index);
                     clearInterval(timer);
                 }
-            }
+            },
+
+            preview (index) {
+                const id = this.projectid;
+                this.framePreview({
+                    index,
+                    id
+                })
+            } 
 
         },
 
         vuex: {
             getters: {
+                projectid: ({ project }) => project.id,
                 project: ({ project }) => project.common
             },
             actions: {
                 previewOneFrame,
                 loopControl,
-                playControl
+                playControl,
+                framePreview
             }
         }
     }

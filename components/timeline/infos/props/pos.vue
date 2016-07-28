@@ -5,11 +5,11 @@
         <keyframe-control :layer="layer" :prop="prop"></keyframe-control>
         <span class="timeline-item-label2">
             <c-number
-                :value="position.x.value"
+                :value="+position.x.value"
                 @on-change="changeX | debounce 300"
             ></c-number>
             <c-number
-                :value="position.y.value"
+                :value="+position.y.value"
                 @on-change="changeY | debounce 300"
             ></c-number>
         </span>
@@ -21,7 +21,6 @@
     import KeyframeControl from './control.vue';
     import cNumber from 'components/common/ui/number.vue';
     import {
-        propValueChange,
         addKeyframe
     } from 'store/actions';
 
@@ -61,7 +60,7 @@
             position () {
                 const kfs = this.keyframes;
                 const fi = this.project.frameIndex;
-                const layerid = this.layer.id;
+                const layerid = this.layer._id;
                 const prop = this.prop;
                 const pkf = preKeyframe(kfs, fi, layerid, prop)
 
@@ -72,33 +71,39 @@
                     return pkf
                 }
 
-                return this.layer[prop];
+                return this.layer[prop] || {x: {value:0, fx: 'linear'}, y: {value:0, fx: 'linear'}};
             }
         },
 
         methods: {
             changeX (value) {
                 const me = this;
-                hasProp(me.keyframes, me.project.frameIndex, me.layer.id, me.prop)
-                    ? me.propValueChange(value, me.layer.id, me.prop, 'x')
-                    : me.addKeyframe(me.layer, me.prop, value, 'x');
+                const projectid = me.projectid;
+                const layerid = me.layer._id;
+                const prop = me.prop;
+                const key = 'x';
+                const index = me.project.frameIndex;
+                me.addKeyframe({ projectid, index, layerid, prop, key, value });
             },
 
             changeY (value) {
                 const me = this;
-                hasProp(me.keyframes, me.project.frameIndex, me.layer.id, me.prop)
-                    ? me.propValueChange(value, me.layer.id, me.prop, 'y')
-                    : me.addKeyframe(me.layer, me.prop, value, 'y');
+                const projectid = me.projectid;
+                const layerid = me.layer._id;
+                const prop = me.prop;
+                const key = 'y';
+                const index = me.project.frameIndex;
+                me.addKeyframe({ projectid, index, layerid, prop, key, value });
             }
         },
 
         vuex: {
             getters: {
+                projectid: ({ project }) => project.id,
                 project: ({ project }) => project.common,
                 keyframes: ({ keyframes }) => keyframes.all
             },
             actions: {
-                propValueChange,
                 addKeyframe
             }
         }

@@ -22,8 +22,8 @@
         <label class="timeline-infos-tag">
             <i
                 class="iconfont"
-                :class="{ unfold: layerstatus, fold: !layerstatus }"
-                @click="layerShowToggle(index)"
+                :class="{ unfold: layer.statusLayer, fold: !layer.statusLayer }"
+                @click="layerToggle"
             >
             </i>
             <b :style="{ background: layer.tag }"></b>
@@ -90,23 +90,20 @@
         computed: {
 
             lock () {
-                return this.layer.status.lock
+                return this.layer.statusLock
             },
             view () {
-                return this.layer.status.view
+                return this.layer.statusView
             },
             dview () {
-                return this.layer.status.dview
-            },
-            layerstatus () {
-                return this.layer.status.layer
+                return this.layer.statusDview
             },
 
             layerParentname () {
                 let pid = this.layer.parentid;
                 let pname = 'Null';
 
-                 for (let item of this.project.layers) {
+                 for (let item of this.layers) {
                     if (+item.id === +pid) {
                         pname = item.name;
                         break;
@@ -117,7 +114,7 @@
 
             parentLayers () {
                 let temp = [];
-                for (let item of this.project.layers) {
+                for (let item of this.layers) {
                     if (+item.id !== +this.layer.id) {
                         temp.push(item);
                     }
@@ -134,11 +131,21 @@
 
             inputChange (e) {
                 this.layernameChange(this.index, e.target.value);
+            },
+
+            layerToggle () {
+                const layerid = this.layer._id;
+                const field = 'statusLayer';
+                const value = !this.layer.statusLayer;
+                const index = this.index;
+
+                this.layerShowToggle({ layerid, index, field, value });
             }
         },
 
         vuex: {
             getters: {
+                layers: ({ layers }) => layers.all,
                 project: ({ project }) => project.common
             },
 

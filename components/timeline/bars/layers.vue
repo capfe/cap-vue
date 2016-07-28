@@ -34,7 +34,7 @@
     import BarsLayer from './layer.vue';
     import $ from 'jquery';
 
-    import { previewOneFrame } from 'store/actions.js';
+    import { framePreview } from 'store/actions.js';
 
     export default {
 
@@ -78,19 +78,23 @@
             },
 
             fixedBarClick (e) {
-                const index = Math.floor((e.clientX + this.$el.scrollLeft - 509) / this.project.pixel)
-                this.previewOneFrame(index);
+                const index = Math.floor((e.clientX + this.$el.scrollLeft - 409) / this.project.pixel)
+                this.framePreview({
+                    index,
+                    id: this.projectid
+                });
             }
         },
 
         vuex: {
             getters: {
+                projectid: ({ project }) => project.id,
                 project: ({ project }) => project.common,
                 layers: ({ layers }) => layers.all
             },
 
             actions: {
-                previewOneFrame
+                framePreview
             }
         }
     }

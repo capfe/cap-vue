@@ -1,6 +1,6 @@
 /**
  * @file 
- * @author mj(zoumiaojiang@baidu.com)
+ * @author mj(zoumiaojiang@gmail.com)
  */
 
 export default {};

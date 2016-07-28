@@ -1,6 +1,6 @@
 /**
  * @file 主入口
- * @author mj(zoumiaojiang@baidu.con)
+ * @author mj(zoumiaojiang@gmail.com)
  */
 
 import Router from 'vue-router';
