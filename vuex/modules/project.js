@@ -70,7 +70,7 @@ const mutations = {
         state.tabs[index].show = false;
     },
 
-    [SET_CURRENT_LAYER_ID] (statem, index) {
+    [SET_CURRENT_LAYER_ID] (state, index) {
         if (typeof state.common.clid == 'undefined') {
             Vue.set(state.common, 'clid', index);
         }

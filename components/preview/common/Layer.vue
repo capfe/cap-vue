@@ -62,7 +62,7 @@ export default {
     },
     computed: {
         layer () {
-            let layers = this.originlayers;
+            let layers = this.layers;
             let keyframes = this.allKeyframes;
             let curFrameIndex = this.curFrameIndex;
             let layer = {};
@@ -116,7 +116,7 @@ export default {
     vuex: {
         getters: {
             curFrameIndex: ({ project }) => project.common.frameIndex,
-            originlayers: ({ project }) => project.common.layers,
+            layers: ({ layers }) => layers.all,
             allKeyframes: ({ keyframes }) => keyframes.all,
         }
     }

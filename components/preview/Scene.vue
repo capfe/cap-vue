@@ -116,7 +116,7 @@ export default {
     vuex: {
         getters: {
             curFrameIndex: ({ project }) => project.common.frameIndex,
-            originlayers: ({ project }) => project.common.layers,
+            originlayers: ({ layers }) => layers.all,
             allKeyframes: ({ keyframes }) => keyframes.all,
             clid: ({ project }) => project.common.clid
         },
