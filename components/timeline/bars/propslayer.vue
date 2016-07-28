@@ -2,16 +2,16 @@
     <div
         class="timeline-layer-sub1"
         v-bind:class="{
-            show: layer.status.layer,
-            hide: !layer.status.layer
+            show: layer.statusLayer,
+            hide: !layer.statusLayer
         }"
     >
         <div class="timeline-item"></div>
         <div
             class="timeline-layer-sub2"
             v-bind:class="{
-                show: layer.status.props,
-                hide: !layer.status.props
+                show: layer.statusProp,
+                hide: !layer.statusProp
             }"
         >
             <position :layer="layer"></position>

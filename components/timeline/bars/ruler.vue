@@ -23,32 +23,21 @@
         watch: {
 
             // 操作canvas必须要求width是有值的
-            'project.pixel' : function (val, oldVal) {
-                if (!oldVal) {
-                    new Ruler({
-                        canvas: document.getElementById('canvas'),
-                        fps: this.project.fps,
-                        totalFrame: this.project.totalFrame,
-                        scale: this.project.scale,
-                        pixel: this.project.pixel
-                    });
-                }
+            'projectid' : function (val, oldVal) {
+                new Ruler({
+                    canvas: document.getElementById('canvas'),
+                    fps: this.project.fps,
+                    totalFrame: this.project.totalFrame,
+                    scale: this.project.scale,
+                    pixel: this.project.pixel
+                });
             }
-        },
-
-        ready () {
-            new Ruler({
-                canvas: document.getElementById('canvas'),
-                fps: this.project.fps,
-                totalFrame: this.project.totalFrame,
-                scale: this.project.scale,
-                pixel: this.project.pixel
-            });
         },
 
         vuex: {
             getters: {
-                project: ({ project }) => project.common
+                project: ({ project }) => project.common,
+                projectid: ({ project }) => project.id
             }
         }
     }

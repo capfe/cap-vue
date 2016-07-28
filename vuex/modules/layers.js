@@ -38,39 +38,39 @@ const mutations = {
         state.all[index].status.view
             = !state.all[index].status.view;
         for (let layer of state.all) {
-            layer.status.dview = false;
+            layer.statusDview = false;
         }
     },
 
     [LAYER_DVIEW_TOGGLE] (state, index) {
-        const dview = state.all[index].status.dview;
+        const dview = state.all[index].statusDview;
         
         for (let layer of state.all) {
             if (!dview) {
-                layer.status.view = false;
-                layer.status.dview = false;
+                layer.statusView = false;
+                layer.statusDview = false;
             }
             else {
-                layer.status.view = true;
+                layer.statusView = true;
             }
         }
-        state.all[index].status.view = true;
-        state.all[index].status.dview = !dview;
+        state.all[index].statusView = true;
+        state.all[index].statusDview = !dview;
     },
 
     [LAYER_LOCK_TOGGLE] (state, index) {
-        state.all[index].status.lock
-            = !state.all[index].status.lock;
+        state.all[index].statusLock
+            = !state.all[index].statusLock;
     },
 
     [LAYER_SHOW_TOGGLE] (state, index) {
-        state.all[index].status.layer
-            = !state.all[index].status.layer;
+        state.all[index].statusLayer
+            = !state.all[index].statusLayer;
     },
 
     [LAYER_PROPS_TOGGLE] (state, index) {
-        state.all[index].status.props
-            = !state.all[index].status.props;
+        state.all[index].statusProp
+            = !state.all[index].statusProp;
     },
 
     [LAYER_PARENT_CHANGE] (state, index, parentid) {

@@ -5,7 +5,7 @@
         <keyframe-control :layer="layer" :prop="prop"></keyframe-control>
         <span class="timeline-item-label2">
             <c-number
-                :value="opacity.value"
+                :value="+opacity.value"
                 @on-change="change | debounce 300"
             ></c-number> %
         </span>
@@ -17,7 +17,6 @@
     import KeyframeControl from './control.vue';
     import cNumber from 'components/common/ui/number.vue';
     import {
-        propValueChange,
         addKeyframe
     } from 'store/actions';
 
@@ -56,7 +55,7 @@
             opacity () {
                 const kfs = this.keyframes;
                 const fi = this.project.frameIndex;
-                const layerid = this.layer.id;
+                const layerid = this.layer._id;
                 const prop = this.prop;
                 const pkf = preKeyframe(kfs, fi, layerid, prop)
 
@@ -67,26 +66,29 @@
                     return pkf
                 }
 
-                return this.layer[prop];
+                return this.layer[prop] || {value:100, fx: 'linear'};
             }
         },
 
         methods: {
             change (value) {
                 const me = this;
-                hasProp(me.keyframes, me.project.frameIndex, me.layer.id, me.prop)
-                    ? me.propValueChange(value, me.layer.id, me.prop)
-                    : me.addKeyframe(me.layer, me.prop, value);
+                const layerid = me.layer._id;
+                const prop = me.prop;
+                const projectid = me.projectid;
+                const index = me.project.frameIndex;
+                me.addKeyframe({ projectid, index, layerid, prop, value });
+
             }
         },
 
         vuex: {
             getters: {
+                projectid: ({ project }) => project.id,
                 project: ({ project }) => project.common,
                 keyframes: ({ keyframes }) => keyframes.all
             },
             actions: {
-                propValueChange,
                 addKeyframe
             }
         }

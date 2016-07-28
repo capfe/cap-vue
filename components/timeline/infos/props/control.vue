@@ -3,17 +3,20 @@
         <i 
             class="iconfont"
             :class="{ disabled: !hasPre }"
-            @click="preKeyframe(layer.id, prop)"
+            @click="preKeyframe(layer._id, prop)"
         >&#xe60d;</i>
         <i
             class="iconfont"
-            :class="{ unselected: !isselected, selected: isselected }"
+            :class="{
+                unselected: !isselected,
+                selected: isselected
+            }"
             @click="keyframeToggle"
         ></i>
         <i
             class="iconfont"
             :class="{ disabled: !hasNext }"
-            @click="nextKeyframe(layer.id, prop)"
+            @click="nextKeyframe(layer._id, prop)"
         >&#xe60e;</i>
     </div>
     <span
@@ -40,6 +43,8 @@
         emptyKeyframe
     } from 'store/actions';
 
+    import { PROPS_TYPES } from 'lib/configs';
+
 
     export default {
 
@@ -51,30 +56,42 @@
         },
 
         methods: {
+
             keyframeToggle () {
                 const me = this;
+                const projectid = me.projectid;
+                const index = me.project.frameIndex;
+                const layerid = me.layer._id;
+                const prop = me.prop;
+                const type = PROPS_TYPES[prop].coordinate;
                 me.isselected
-                    ? me.removeKeyframe(me.layer.id, me.prop)
-                    : me.addKeyframe(me.layer, me.prop);
+                    ? me.removeKeyframe({ layerid, prop })
+                    : me.addKeyframe({ index, projectid, layerid, prop, type });
             },
+
             lockKeyframeToggle () {
                 const me = this;
+                const projectid = me.projectid;
+                const index = me.project.frameIndex;
+                const layerid = me.layer._id;
+                const prop = me.prop;
+                const type = PROPS_TYPES[prop].coordinate;
                 me.status
-                    ? me.emptyKeyframe(me.layer.id, me.prop)
-                    : me.addKeyframe(me.layer, me.prop);
+                    ? me.emptyKeyframe({ layerid, prop })
+                    : me.addKeyframe({ projectid, index, layerid, prop, type });
             }
         },
 
         computed: {
 
             propname () {
-                return { opacity: '不透明度', position: '位置', scale: '缩放', rotate: '旋转' }[this.prop];
+                return PROPS_TYPES[this.prop].name;
             },
 
             isselected () {
                 const kfs = this.keyframes;
                 const fi = this.project.frameIndex;
-                const lid = this.layer.id;
+                const lid = this.layer._id;
                 const prop = this.prop;
                 return kfs[fi] && kfs[fi][lid] && kfs[fi][lid][prop];
             },
@@ -82,7 +99,7 @@
             hasPre () {
                 const kfs = this.keyframes;
                 const fi = this.project.frameIndex;
-                const lid = this.layer.id;
+                const lid = this.layer._id;
                 const prop = this.prop;
                 for (let i = fi - 1; i >= 0; i--) {
                     if (kfs[i] && kfs[i][lid] && kfs[i][lid][prop]) {
@@ -96,7 +113,7 @@
                 const kfs = this.keyframes;
                 const tf = this.project.totalFrame;
                 const fi = this.project.frameIndex;
-                const lid = this.layer.id;
+                const lid = this.layer._id;
                 const prop = this.prop;
                 for (let i = fi + 1; i <= tf; i++) {
                     if (kfs[i] && kfs[i][lid] && kfs[i][lid][prop]) {
@@ -109,7 +126,7 @@
             status () {
                 const kfs = this.keyframes;
                 const tf = this.project.totalFrame;
-                const lid = this.layer.id;
+                const lid = this.layer._id;
                 const prop = this.prop;
                 for (let i = 0; i <= tf; i++) {
                     if (kfs[i] && kfs[i][lid] && kfs[i][lid][prop]) {
@@ -123,6 +140,7 @@
         vuex: {
             getters: {
                 project: ({ project }) => project.common,
+                projectid: ({ project }) => project.id,
                 keyframes: ({ keyframes }) => keyframes.all
             },
             actions: {

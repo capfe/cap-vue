@@ -57,9 +57,9 @@ const mutations = {
         state.common = project;
         state.id = project._id;
         for (let tab of state.tabs) {
-            tab.focus = 0;
+            tab.focus = false;
             if (tab.id == state.id) {
-                tab.focus = 1;
+                tab.focus = true;
             }
         }
     },

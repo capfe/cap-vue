@@ -1,6 +1,6 @@
 /**
  * @file vuex store
- * @author mj(zoumiaojiang@baidu.com)
+ * @author mj(zoumiaojiang@gmail.com)
  */
 
 import Vue from 'vue';

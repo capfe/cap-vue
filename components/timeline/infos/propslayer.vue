@@ -1,17 +1,17 @@
 <template>
-    <div class="timeline-layer-sub1" :class="{ show: layerstatus, hide: !layerstatus }">
+    <div class="timeline-layer-sub1" :class="{ show: layer.statusLayer, hide: !layer.statusLayer }">
         <div class="timeline-item">
             <span class="timeline-item-btn">
                 <i
                     class="iconfont"
-                    :class="{ unfold: propsstatus, fold: !propsstatus }"
+                    :class="{ unfold: layer.statusProp, fold: !layer.statusProp }"
                     @click="propsToggle(index)"
                 ></i>
             </span>
             <span class="timeline-item-label1">变换</span>
             <span class="timeline-item-label2">设置</span>
         </div>
-        <div class="timeline-layer-sub2" :class="{ show: propsstatus, hide: !propsstatus }">
+        <div class="timeline-layer-sub2" :class="{ show: layer.statusProp, hide: !layer.statusProp }">
             <position :layer="layer"></position>
             <scale :layer="layer"></scale>
             <rotate :layer="layer"></rotate>
@@ -27,7 +27,7 @@
     import Rotate from './props/rotate.vue';
     import Opacity from './props/opacity.vue';
 
-    import { propsToggle } from 'store/actions';
+    import { propsShowToggle } from 'store/actions';
 
     export default {
 
@@ -45,22 +45,23 @@
             layer: Object
         },
 
-        computed: {
-            propsstatus () {
-                return this.layer.status.props;
-            },
-            layerstatus () {
-                return this.layer.status.layer;
+        methods: {
+            propsToggle () {
+                const layerid = this.layer._id;
+                const field = 'statusProp';
+                const value = !this.layer.statusProp;
+                const index = this.index;
+
+                this.propsShowToggle({ layerid, field, value, index });
             }
         },
-
 
         vuex: {
             getters: {
                 project: ({ project }) => project.common
             },
             actions: {
-                propsToggle
+                propsShowToggle
             }
         }
 

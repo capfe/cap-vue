@@ -69,67 +69,8 @@ const mutations = {
     },
 
 
-    [KEYFRAME_ADD] (state, layer, prop, value, key) {
-        const fi = project.state.common.frameIndex;
-        const layerid = layer.id;
-        const kfs = state.all;
-
-        let defaultKeyframe = Object.assign(
-            {},
-            {
-                type: 1,
-                status: 0,
-                index: fi
-            },
-            layer[prop]
-        );
-
-        for (let i = fi; i >= 0; i--) {
-            if (kfs[i] && kfs[i][layerid] && kfs[i][layerid][prop]) {
-                const propObj = {
-                    index: fi
-                };
-
-                //  TODO: 需要更灵活
-                if (value) {
-                    if (key) {
-                        propObj[key] = {
-                            value,
-                            fx: 'liner'
-                        }
-                    }
-                    else {
-                        propObj.value = value;
-                        propObj.fx = 'liner';
-                    }
-                }
-
-                defaultKeyframe = Object.assign(
-                    {},
-                    cloneObject(kfs[i][layerid][prop]),
-                    propObj
-                );
-                break;
-            }
-        }
-
-        if (kfs[fi]) {
-            // if is a diffrent new layer
-            if (!kfs[fi][layerid]) {
-                const propData = {};
-                Vue.set(propData, prop, defaultKeyframe);
-                Vue.set(state.all[fi], layerid, propData);
-            }
-            else {
-                Vue.set(state.all[fi][layerid], prop, defaultKeyframe);
-            }
-        }
-        else {
-            const keyframe = {};
-            keyframe[layerid] = {};
-            keyframe[layerid][prop] = defaultKeyframe;
-            state.all.$set(fi, keyframe);
-        }
+    [KEYFRAME_ADD] (state, keyframes) {
+        state.all = keyframes;
     },
 
 
@@ -137,16 +78,6 @@ const mutations = {
         const tf = project.state.common.totalFrame;
         for (let i = 0; i <= tf; i++) {
             state.all[i] && state.all[i][layerid] && Vue.delete(state.all[i][layerid], prop);
-        }
-    },
-
-    [KEYFRAME_VALUE_CHANGE] (state, value, layerid, prop, key) {
-        const fi = project.state.common.frameIndex;
-        if (key) {
-            state.all[fi][layerid][prop][key].value = value;
-        }
-        else {
-            state.all[fi][layerid][prop].value = value;
         }
     }
 }
