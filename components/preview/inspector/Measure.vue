@@ -191,13 +191,8 @@
 import CapInput from '../common/Input.vue';
 
 import {
-    propValueChange,
     addKeyframe
 } from 'store/actions';
-
-function hasProp(kfs, fi, layerid, prop) {
-    return kfs[fi] && kfs[fi][layerid] && kfs[fi][layerid][prop];
-}
 
 export default {
     ready () {
@@ -210,15 +205,16 @@ export default {
     methods: {
         setPropValue (category, type, value) {
             const me = this;
-            if (!me.clid) {
+            const projectid = me.projectid;
+            const index = me.curFrameIndex;
+            const clid = me.clid;
+            if (!clid) {
                 return;
             }
 
             value = +value;
 
-            hasProp(me.allKeyframes, me.curFrameIndex, me.clid, category)
-                ? me.propValueChange(value, me.clid, category, type)
-                : me.addKeyframe(me.curLayer, category, value, type);
+            me.addKeyframe(projectid, index, clid, category, type, value);
         }
     },
     data () {
@@ -235,7 +231,7 @@ export default {
     },
     computed: {
         curLayer () {
-            let layers = this.originlayers;
+            let layers = this.layers;
             let keyframes = this.allKeyframes;
             let curFrameIndex = this.curFrameIndex;
             let layer = {};
@@ -245,24 +241,24 @@ export default {
             }
 
             for (var index in layers) {
-                if (lid == layers[+index].id) {
+                if (lid == layers[+index]._id) {
                     layer = Object.assign({}, layers[+index]);
                 }
             }
 
-            if (layer) {
-                for (var i = 0; i <= curFrameIndex; i++) {
-                    let curKeyframe = keyframes[i];
-                    if (!curKeyframe) {
-                        continue;
-                    }
-                    let curLayer = curKeyframe[lid];
-                    if (!curLayer) {
-                        continue;
-                    }
-                    Object.assign(layer, curLayer);
-                }
-            }
+            // if (layer) {
+            //     for (var i = 0; i <= curFrameIndex; i++) {
+            //         let curKeyframe = keyframes[i];
+            //         if (!curKeyframe) {
+            //             continue;
+            //         }
+            //         let curLayer = curKeyframe[lid];
+            //         if (!curLayer) {
+            //             continue;
+            //         }
+            //         Object.assign(layer, curLayer);
+            //     }
+            // }
 
             return layer;
         },
@@ -399,12 +395,11 @@ export default {
     vuex: {
         getters: {
             curFrameIndex: ({ project }) => project.common.frameIndex,
-            originlayers: ({ project }) => project.common.layers,
+            layers: ({ layers }) => layers.all,
             allKeyframes: ({ keyframes }) => keyframes.all,
             clid: ({ project }) => project.common.clid
         },
         actions: {
-            propValueChange,
             addKeyframe
         }
     }

@@ -30,18 +30,18 @@
         data-draggable="layer"
         :style='style'
         :data-lid="lid">
-        <div class='label'>
-            lid: {{lid}}
+        <div class='label' style="display:none;">
+            lid: !!lid}}
             <br>
-            x: {{layer.position.x.value}}
-            y: {{layer.position.y.value}}
-            width: {{layer.size.x.value}}
-            height: {{layer.size.y.value}}
-            rotate: {{layer.rotate.x.value}} {{layer.rotate.y.value}} {{layer.rotate.z.value}}
-            scale: {{layer.scale.x.value}} {{layer.scale.y.value}}
-            skew: {{layer.skew.x.value}} {{layer.skew.y.value}}
-            border: {{layer.border.width.value}}px {{layer.border.style.value}} {{layer.border.color.value}}
-            borderRadius: {{layer.border.radius.value}}
+            x: !!layer.position.x.value}}
+            y: !!layer.position.y.value}}
+            width: !!layer.size.x.value}}
+            height: !!layer.size.y.value}}
+            rotate: !!layer.rotate.x.value}} !!layer.rotate.y.value}} !!layer.rotate.z.value}}
+            scale: !!layer.scale.x.value}} !!layer.scale.y.value}}
+            skew: !!layer.skew.x.value}} !!layer.skew.y.value}}
+            border: !!layer.border.width.value}}px !!layer.border.style.value}} !!layer.border.color.value}}
+            borderRadius: !!layer.border.radius.value}}
         </div>
         <cap-control-layer v-show="lid == this.clid"></cap-control-layer>
         <div class='origin-style' :style='originStyle'></div>
@@ -60,7 +60,26 @@ export default {
     components: {
         CapControlLayer
     },
+    watch: {
+        imgSrc () {
+            console.log('watch imgSrc')
+        }
+    },
     computed: {
+        imgSrc () {
+            const srcid = this.layer.sourceid;
+            const sroot = this.server.root;
+            const files = this.files;
+            let path;
+            for (let file of files) {
+                if (srcid === file._id) {
+                    path = file.abspath;
+                    break;
+                }
+            }
+
+            return `${sroot}${path}`;
+        },
         layer () {
             let layers = this.layers;
             let keyframes = this.allKeyframes;
@@ -68,7 +87,7 @@ export default {
             let layer = {};
             let lid = this.lid;
             for (var index in layers) {
-                if (lid == layers[+index].id) {
+                if (lid == layers[+index]._id) {
                     layer = Object.assign({}, layers[+index]);
                 }
             }
@@ -89,27 +108,27 @@ export default {
         },
         style () {
             return {
-                width: `${this.layer.size.x.value}px`,
-                height: `${this.layer.size.y.value}px`,
-                transformOrigin: `${this.layer.origin.x.value}px ${this.layer.origin.y.value}px`,
+                width: `100px`,
+                height: `100px`,
+                background: `url(${this.imgSrc})`,
+                transformOrigin: `0px 0px`,
                 transform: `translateX(${this.layer.position.x.value}px)
                             translateY(${this.layer.position.y.value}px)
                             rotateX(${this.layer.rotate.x.value}deg)
                             rotateY(${this.layer.rotate.y.value}deg)
-                            rotateZ(${this.layer.rotate.z.value}deg)
                             scaleX(${this.layer.scale.x.value})
                             scaleY(${this.layer.scale.y.value})`,
-                borderWidth: `${this.layer.border.width.value}px`,
-                borderRadius: `${this.layer.border.radius.value}px`,
-                borderColor: `${this.layer.border.color.value}`,
-                borderStyle: `${this.layer.border.style.value}`
+                // borderWidth: `${this.layer.border.width.value}px`,
+                // borderRadius: `${this.layer.border.radius.value}px`,
+                // borderColor: `${this.layer.border.color.value}`,
+                // borderStyle: `${this.layer.border.style.value}`
 
             }
         },
         originStyle () {
             return {
-                left: `${this.layer.origin.x.value}px`,
-                top: `${this.layer.origin.y.value}px`
+                // left: `${this.layer.origin.x.value}px`,
+                // top: `${this.layer.origin.y.value}px`
             }
         }
     },
@@ -118,6 +137,8 @@ export default {
             curFrameIndex: ({ project }) => project.common.frameIndex,
             layers: ({ layers }) => layers.all,
             allKeyframes: ({ keyframes }) => keyframes.all,
+            files: ({ statics }) => statics.statics.files,
+            server: ({ base }) => base.server
         }
     }
 }

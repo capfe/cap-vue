@@ -245,14 +245,9 @@
 import CapInput from '../common/Input.vue';
 
 import {
-    propValueChange,
     addKeyframe,
     originValueChange
 } from 'store/actions';
-
-function hasProp(kfs, fi, layerid, prop) {
-    return kfs[fi] && kfs[fi][layerid] && kfs[fi][layerid][prop];
-}
 
 export default {
     ready () {
@@ -376,7 +371,6 @@ export default {
             clid: ({ project }) => project.common.clid
         },
         actions: {
-            propValueChange,
             addKeyframe,
             originValueChange
         }

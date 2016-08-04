@@ -5,7 +5,7 @@
 
 import Vue from 'vue';
 import Vuex from 'vuex';
-import createLogger from 'vuex/logger'
+import createLogger from 'vuex/logger';
 import keyframes from './modules/keyframes';
 import base from './modules/base';
 import project from './modules/project';

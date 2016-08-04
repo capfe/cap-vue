@@ -59,6 +59,7 @@ export const removeLayer = ({ dispatch }, id) => dispatch(types.LAYER_REMOVE, id
 export const setCurLayerId = ({ dispatch }, index) => dispatch(types.SET_CURRENT_LAYER_ID, index);
 export const originValueChange = ({ dispatch }, value, layerid, prop, key) => {
     dispatch(types.ORIGIN_VALUE_CHANGE, value, layerid, prop, key);
+}
 export const layerShowToggle = ({ dispatch }, params) => {
     layers.update(params, data => {
         dispatch(types.LAYER_SHOW_TOGGLE, params.index);

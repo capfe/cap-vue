@@ -23,13 +23,13 @@
 
 <template>
     <div class='cap-scene'
-        @mousemove='drag'
+        @mousemove='drag | debounce 100'
         @mousedown='dragStart'
         @mouseup='dragEnd'
         >
         <div class="cap-scene-container">
-            <cap-layer v-for="layer in originlayers"
-                :lid="layer.id"
+            <cap-layer v-for="layer in layers"
+                :lid="layer._id"
             ></cap-layer>
         </div>
     </div>
@@ -42,7 +42,6 @@ import CapLayer from './common/Layer.vue';
 // import * as actions from 'models/actions';
 // import { getLayer } from 'models/getters';
 import {
-    propValueChange,
     addKeyframe,
     setCurLayerId
 } from 'store/actions';
@@ -80,8 +79,8 @@ export default {
         },
         curLayer: {
             get () {
-                let layers = this.originlayers;
-                let keyframes = this.allKeyframes;
+                let layers = this.layers;
+                let keyframes = this.keyframes;
                 let curFrameIndex = this.curFrameIndex;
                 let layer = {};
                 let lid = this.clid;
@@ -90,7 +89,7 @@ export default {
                 }
 
                 for (var index in layers) {
-                    if (lid == layers[+index].id) {
+                    if (lid == layers[+index]._id) {
                         layer = Object.assign({}, layers[+index]);
                     }
                 }
@@ -113,19 +112,6 @@ export default {
             }
         }
     },
-    vuex: {
-        getters: {
-            curFrameIndex: ({ project }) => project.common.frameIndex,
-            originlayers: ({ layers }) => layers.all,
-            allKeyframes: ({ keyframes }) => keyframes.all,
-            clid: ({ project }) => project.common.clid
-        },
-        actions: {
-            setClid: setCurLayerId,
-            propValueChange,
-            addKeyframe
-        }
-    },
     methods: {
         drag (event) {
             if (!this.dragStartFlag) {
@@ -137,8 +123,10 @@ export default {
                         x: event.clientX - this.dragStartPos.x,
                         y: event.clientY - this.dragStartPos.y
                     }
+
                     this.curLayerX = this.domStartPosition.x + this.offset.x;
                     this.curLayerY = this.domStartPosition.y + this.offset.y;
+console.log(this.curLayerX)
                     break;
                 case 'anchor':
                     this.offset = {
@@ -155,7 +143,12 @@ export default {
             switch (this.draggableType) {
                 case 'layer':
                     var clid = event.target.dataset.lid;
-                    clid && this.setClid(clid);
+
+                    if (!clid) {
+                        return;
+                    }
+
+                    this.setClid(clid);
 
                     this.dragStartFlag = true;
                     this.dragStartPos = {
@@ -167,6 +160,7 @@ export default {
                         x: this.curLayerX,
                         y: this.curLayerY
                     };
+
                     break;
                 case 'anchor':
                     var clid = this.clid;
@@ -199,16 +193,46 @@ export default {
         },
         changeX (value) {
             const me = this;
-            hasProp(me.allKeyframes, me.curFrameIndex, me.clid, 'position')
-                ? me.propValueChange(value, me.clid, 'position', 'x')
-                : me.addKeyframe(me.curLayer, 'position', value, 'x');
+            const projectid = me.projectid;
+            const index = me.curFrameIndex;
+            const clid = me.clid;
+            console.log(value)
+            me.addKeyframe({
+                projectid: projectid,
+                index: 1,
+                layerid: clid,
+                prop: 'position',
+                key: 'x',
+                value: value
+            });
         },
 
         changeY (value) {
             const me = this;
-            hasProp(me.allKeyframes, me.curFrameIndex, me.clid, 'position')
-                ? me.propValueChange(value, me.clid, 'position', 'y')
-                : me.addKeyframe(me.curLayer, 'position', value, 'y');
+            const projectid = me.projectid;
+            const index = me.curFrameIndex;
+            const clid = me.clid;
+            me.addKeyframe({
+                projectid: projectid,
+                index: 1,
+                layerid: clid,
+                prop: 'position',
+                key: 'y',
+                value: value
+            });
+        }
+    },
+    vuex: {
+        getters: {
+            curFrameIndex: ({ project }) => project.common.frameIndex,
+            layers: ({ layers }) => layers.all,
+            keyframes: ({ keyframes }) => keyframes.all,
+            clid: ({ project }) => project.common.clid,
+            projectid: ({ project }) => project.id
+        },
+        actions: {
+            setClid: setCurLayerId,
+            addKeyframe
         }
     }
 };

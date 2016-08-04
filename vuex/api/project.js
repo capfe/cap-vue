@@ -121,7 +121,7 @@ export default {
                 if (data.status == 0) {
                     cb(data.data);
                 }
-            } 
+            }
         });
     }
 
