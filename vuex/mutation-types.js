@@ -24,7 +24,7 @@ export const STATIC_STATUS_CLEAR = 'STATIC_STATUS_CLEAR';
 
 // layers
 export const LAYERS_FETCH = 'LAYERS_FETCH';
-export const lAYER_ADD = 'lAYER_ADD';
+export const LAYER_ADD = 'LAYER_ADD';
 export const LAYER_REMOVE = 'LAYER_REMOVE';
 export const LAYER_SHOW_TOGGLE = 'LAYER_SHOW_TOGGLE';
 export const LAYER_VIEW_TOGGLE = 'LAYER_VIEW_TOGGLE';

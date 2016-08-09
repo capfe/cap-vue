@@ -213,8 +213,14 @@ export default {
             }
 
             value = +value;
-
-            me.addKeyframe(projectid, index, clid, category, type, value);
+            me.addKeyframe({
+                projectid: projectid,
+                index: index,
+                layerid: clid,
+                prop: category,
+                key: type,
+                value: value
+            });
         }
     },
     data () {
@@ -286,6 +292,7 @@ export default {
         },
         width: {
             get () {
+                return 100;
                 return this.curLayer && this.curLayer.size.x.value;
             },
             set (value) {
@@ -297,6 +304,7 @@ export default {
         },
         height: {
             get () {
+                return 100;
                 return this.curLayer && this.curLayer.size.y.value;
             },
             set (value) {
@@ -352,6 +360,7 @@ export default {
         },
         rotateZ: {
             get () {
+                return 0;
                 return this.curLayer && this.curLayer.rotate.z.value;
             },
             set (value) {
@@ -371,6 +380,7 @@ export default {
         },
         originX: {
             get () {
+                return 0;
                 return this.curLayer && this.curLayer.origin.x.value;
             },
             set (value) {
@@ -382,6 +392,7 @@ export default {
         },
         originY: {
             get () {
+                return 0;
                 return this.curLayer && this.curLayer.origin.y.value;
             },
             set (value) {

@@ -10,7 +10,9 @@
         width: 4px;
         height: 4px;
         background-color: #f00;
-        transform: translateX(-50%) translateY(-50%);;
+        transform: translateX(-50%) translateY(-50%);
+        top: 0;
+        left: 0;
     }
     .label {
         position: absolute;
@@ -26,25 +28,25 @@
 </style>
 
 <template>
-    <div class='cap-layer'
+    <div class="cap-layer"
         data-draggable="layer"
-        :style='style'
+        :style="style"
         :data-lid="lid">
-        <div class='label' style="display:none;">
-            lid: !!lid}}
+        <div class="label">
+            lid: {{lid}}
             <br>
-            x: !!layer.position.x.value}}
-            y: !!layer.position.y.value}}
-            width: !!layer.size.x.value}}
-            height: !!layer.size.y.value}}
-            rotate: !!layer.rotate.x.value}} !!layer.rotate.y.value}} !!layer.rotate.z.value}}
-            scale: !!layer.scale.x.value}} !!layer.scale.y.value}}
-            skew: !!layer.skew.x.value}} !!layer.skew.y.value}}
+            x: {{layer.position.x.value}}
+            y: {{layer.position.y.value}}
+            <!-- width: {{layer.size.x.value}}
+            height: {{layer.size.y.value}} -->
+            rotate: {{layer.rotate.x.value}} {{layer.rotate.y.value}} <!-- {{layer.rotate.z.value}} -->
+            scale: {{layer.scale.x.value}} {{layer.scale.y.value}}
+            <!--skew: !!layer.skew.x.value}} !!layer.skew.y.value}}
             border: !!layer.border.width.value}}px !!layer.border.style.value}} !!layer.border.color.value}}
-            borderRadius: !!layer.border.radius.value}}
+            borderRadius: !!layer.border.radius.value}}-->
         </div>
         <cap-control-layer v-show="lid == this.clid"></cap-control-layer>
-        <div class='origin-style' :style='originStyle'></div>
+        <div class="origin-style" v-show="lid == this.clid" :style="originStyle"></div>
     </div>
 
 </template>
@@ -86,6 +88,7 @@ export default {
             let curFrameIndex = this.curFrameIndex;
             let layer = {};
             let lid = this.lid;
+
             for (var index in layers) {
                 if (lid == layers[+index]._id) {
                     layer = Object.assign({}, layers[+index]);
@@ -107,6 +110,7 @@ export default {
             return layer;
         },
         style () {
+            console.log(this.lid);
             return {
                 width: `100px`,
                 height: `100px`,
@@ -134,6 +138,7 @@ export default {
     },
     vuex: {
         getters: {
+            clid: ({ project }) => project.common.clid,
             curFrameIndex: ({ project }) => project.common.frameIndex,
             layers: ({ layers }) => layers.all,
             allKeyframes: ({ keyframes }) => keyframes.all,

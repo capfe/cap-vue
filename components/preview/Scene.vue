@@ -23,7 +23,7 @@
 
 <template>
     <div class='cap-scene'
-        @mousemove='drag | debounce 100'
+        @mousemove='drag | debounce 50'
         @mousedown='dragStart'
         @mouseup='dragEnd'
         >
@@ -126,7 +126,7 @@ export default {
 
                     this.curLayerX = this.domStartPosition.x + this.offset.x;
                     this.curLayerY = this.domStartPosition.y + this.offset.y;
-console.log(this.curLayerX)
+
                     break;
                 case 'anchor':
                     this.offset = {
@@ -196,7 +196,7 @@ console.log(this.curLayerX)
             const projectid = me.projectid;
             const index = me.curFrameIndex;
             const clid = me.clid;
-            console.log(value)
+            console.log('x: ', value)
             me.addKeyframe({
                 projectid: projectid,
                 index: 1,
@@ -212,9 +212,10 @@ console.log(this.curLayerX)
             const projectid = me.projectid;
             const index = me.curFrameIndex;
             const clid = me.clid;
+            console.log('y: ', value)
             me.addKeyframe({
                 projectid: projectid,
-                index: 1,
+                index: index,
                 layerid: clid,
                 prop: 'position',
                 key: 'y',
