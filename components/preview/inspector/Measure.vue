@@ -251,20 +251,19 @@ export default {
                     layer = Object.assign({}, layers[+index]);
                 }
             }
-
-            // if (layer) {
-            //     for (var i = 0; i <= curFrameIndex; i++) {
-            //         let curKeyframe = keyframes[i];
-            //         if (!curKeyframe) {
-            //             continue;
-            //         }
-            //         let curLayer = curKeyframe[lid];
-            //         if (!curLayer) {
-            //             continue;
-            //         }
-            //         Object.assign(layer, curLayer);
-            //     }
-            // }
+            if (layer) {
+                for (var i = 0; i <= curFrameIndex; i++) {
+                    let curKeyframe = keyframes[i];
+                    if (!curKeyframe) {
+                        continue;
+                    }
+                    let curLayer = curKeyframe[lid];
+                    if (!curLayer) {
+                        continue;
+                    }
+                    Object.assign(layer, curLayer);
+                }
+            }
 
             return layer;
         },
@@ -322,6 +321,7 @@ export default {
                 if (this.willChange.scaleX != true) {
                     return;
                 }
+
                 this.setPropValue('scale', 'x', value);
             }
         },
@@ -408,7 +408,8 @@ export default {
             curFrameIndex: ({ project }) => project.common.frameIndex,
             layers: ({ layers }) => layers.all,
             allKeyframes: ({ keyframes }) => keyframes.all,
-            clid: ({ project }) => project.common.clid
+            clid: ({ project }) => project.common.clid,
+            projectid: ({ project }) => project.id
         },
         actions: {
             addKeyframe
