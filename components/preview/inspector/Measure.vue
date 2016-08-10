@@ -232,7 +232,9 @@ export default {
     },
     events: {
         'willChange': function (param) {
-            this.willChange[param.type] = param.status;
+            this.willChange = {
+                [param.type]: param.status
+            }
         }
     },
     computed: {
@@ -291,8 +293,12 @@ export default {
         },
         width: {
             get () {
-                return 100;
-                return this.curLayer && this.curLayer.size.x.value;
+                try {
+                    return this.curLayer.size.x.value;
+                }
+                catch (e) {
+                    return 100;
+                }
             },
             set (value) {
                 if (this.willChange.width != true) {
@@ -303,8 +309,12 @@ export default {
         },
         height: {
             get () {
-                return 100;
-                return this.curLayer && this.curLayer.size.y.value;
+                try {
+                    return this.curLayer.size.y.value;
+                }
+                catch (e) {
+                    return 100;
+                }
             },
             set (value) {
                 if (this.willChange.height != true) {
@@ -360,8 +370,12 @@ export default {
         },
         rotateZ: {
             get () {
-                return 0;
-                return this.curLayer && this.curLayer.rotate.z.value;
+                try {
+                    return this.curLayer.rotate.z.value;
+                }
+                catch (e) {
+                    return 0;
+                }
             },
             set (value) {
                 if (this.willChange.rotateZ != true) {
@@ -380,8 +394,12 @@ export default {
         },
         originX: {
             get () {
-                return 0;
-                return this.curLayer && this.curLayer.origin.x.value;
+                try {
+                    return this.curLayer.origin.x.value;
+                }
+                catch (e) {
+                    return 0;
+                }
             },
             set (value) {
                 if (this.willChange.originX != true) {
@@ -392,8 +410,12 @@ export default {
         },
         originY: {
             get () {
-                return 0;
-                return this.curLayer && this.curLayer.origin.y.value;
+                try {
+                    return this.curLayer.origin.y.value;
+                }
+                catch (e) {
+                    return 0;
+                }
             },
             set (value) {
                 if (this.willChange.originY != true) {

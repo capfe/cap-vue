@@ -37,9 +37,9 @@
             <br>
             x: {{layer.position.x.value}}
             y: {{layer.position.y.value}}
-            <!-- width: {{layer.size.x.value}}
-            height: {{layer.size.y.value}} -->
-            rotate: {{layer.rotate.x.value}} {{layer.rotate.y.value}} <!-- {{layer.rotate.z.value}} -->
+            width: {{layer.size.x.value}}
+            height: {{layer.size.y.value}}
+            rotate: {{layer.rotate.x.value}} {{layer.rotate.y.value}} {{layer.rotate.z.value}}
             scale: {{layer.scale.x.value}} {{layer.scale.y.value}}
             <!--skew: !!layer.skew.x.value}} !!layer.skew.y.value}}
             border: !!layer.border.width.value}}px !!layer.border.style.value}} !!layer.border.color.value}}
@@ -112,9 +112,9 @@ export default {
         style () {
             console.log(this.lid);
             return {
-                width: `100px`,
-                height: `100px`,
-                background: `url(${this.imgSrc})`,
+                width: `${this.layer.size.x.value}px`,
+                height: `${this.layer.size.y.value}px`,
+                background: `url(${this.imgSrc}) 0% 0% / cover no-repeat`,
                 transformOrigin: `0px 0px`,
                 transform: `translateX(${this.layer.position.x.value}px)
                             translateY(${this.layer.position.y.value}px)

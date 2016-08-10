@@ -23,7 +23,7 @@
 
 <template>
     <div class='cap-scene'
-        @mousemove='drag | debounce 50'
+        @mousemove='drag'
         @mousedown='dragStart'
         @mouseup='dragEnd'
         >
@@ -83,13 +83,14 @@ export default {
                 let keyframes = this.keyframes;
                 let curFrameIndex = this.curFrameIndex;
                 let layer = {};
-                let lid = this.clid;
-                if (!lid) {
+                let clid = this.clid;
+
+                if (!clid) {
                     return null;
                 }
 
                 for (var index in layers) {
-                    if (lid == layers[+index]._id) {
+                    if (clid == layers[+index]._id) {
                         layer = Object.assign({}, layers[+index]);
                     }
                 }
@@ -100,14 +101,14 @@ export default {
                         if (!curKeyframe) {
                             continue;
                         }
-                        let curLayer = curKeyframe[lid];
+                        let curLayer = curKeyframe[clid];
+
                         if (!curLayer) {
                             continue;
                         }
                         Object.assign(layer, curLayer);
                     }
                 }
-
                 return layer;
             }
         }
@@ -165,8 +166,6 @@ export default {
                 case 'anchor':
                     var clid = this.clid;
 
-                    console.log(this.curLayerOrigin);
-
                     this.dragStartFlag = true;
                     this.dragStartPos = {
                         x: event.clientX,
@@ -196,10 +195,9 @@ export default {
             const projectid = me.projectid;
             const index = me.curFrameIndex;
             const clid = me.clid;
-            console.log('x: ', value)
             me.addKeyframe({
                 projectid: projectid,
-                index: 1,
+                index: index,
                 layerid: clid,
                 prop: 'position',
                 key: 'x',
@@ -212,7 +210,6 @@ export default {
             const projectid = me.projectid;
             const index = me.curFrameIndex;
             const clid = me.clid;
-            console.log('y: ', value)
             me.addKeyframe({
                 projectid: projectid,
                 index: index,
