@@ -14,7 +14,8 @@ const PROPS = [
     'scale',
     'rotate',
     'opacity',
-    'skew'
+    'skew',
+    'size'
 ];
 
 
