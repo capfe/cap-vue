@@ -211,7 +211,7 @@ export default {
             if (!clid) {
                 return;
             }
-
+            console.log(`[inspector set prop] ${clid}`);
             value = +value;
             me.addKeyframe({
                 projectid: projectid,
@@ -266,7 +266,7 @@ export default {
                     Object.assign(layer, curLayer);
                 }
             }
-
+            console.log(`[inspector curLayer] ${this.clid}`);
             return layer;
         },
         x: {
@@ -274,9 +274,10 @@ export default {
                 return this.curLayer && this.curLayer.position.x.value;
             },
             set (value) {
-                if (this.willChange.x != true) {
+                if (this.willChange.x != true || +this.x === +value) {
                     return;
                 }
+                console.log(`[inspector change x] ${this.clid} ${value}`);
                 this.setPropValue('position', 'x', value);
             }
         },
@@ -285,9 +286,10 @@ export default {
                 return this.curLayer && this.curLayer.position.y.value;
             },
             set (value) {
-                if (this.willChange.y != true) {
+                if (this.willChange.y != true || +this.y === +value) {
                     return;
                 }
+                console.log(`[inspector change y] ${this.clid} ${value}`);
                 this.setPropValue('position', 'y', value);
             }
         },
@@ -301,7 +303,7 @@ export default {
                 }
             },
             set (value) {
-                if (this.willChange.width != true) {
+                if (this.willChange.width != true || +this.width === +value) {
                     return;
                 }
                 this.setPropValue('size', 'x', value);
@@ -317,7 +319,7 @@ export default {
                 }
             },
             set (value) {
-                if (this.willChange.height != true) {
+                if (this.willChange.height != true || +this.height === +value) {
                     return;
                 }
                 this.setPropValue('size', 'y', value);
@@ -328,7 +330,7 @@ export default {
                 return this.curLayer && this.curLayer.scale.x.value;
             },
             set (value) {
-                if (this.willChange.scaleX != true) {
+                if (this.willChange.scaleX != true || +this.scaleX === +value) {
                     return;
                 }
 
@@ -340,7 +342,7 @@ export default {
                 return this.curLayer && this.curLayer.scale.y.value;
             },
             set (value) {
-                if (this.willChange.scaleY != true) {
+                if (this.willChange.scaleY != true || +this.scaleY === +value) {
                     return;
                 }
                 this.setPropValue('scale', 'y', value);
@@ -351,7 +353,7 @@ export default {
                 return this.curLayer && this.curLayer.rotate.x.value;
             },
             set (value) {
-                if (this.willChange.rotateX != true) {
+                if (this.willChange.rotateX != true || +this.rotateX === +value) {
                     return;
                 }
                 this.setPropValue('rotate', 'x', value);
@@ -362,7 +364,7 @@ export default {
                 return this.curLayer && this.curLayer.rotate.y.value;
             },
             set (value) {
-                if (this.willChange.rotateY != true) {
+                if (this.willChange.rotateY != true || +this.rotateY === +value) {
                     return;
                 }
                 this.setPropValue('rotate', 'y', value);
@@ -378,7 +380,7 @@ export default {
                 }
             },
             set (value) {
-                if (this.willChange.rotateZ != true) {
+                if (this.willChange.rotateZ != true || +this.rotateZ === +value) {
                     return;
                 }
                 this.setPropValue('rotate', 'z', value);
@@ -402,7 +404,7 @@ export default {
                 }
             },
             set (value) {
-                if (this.willChange.originX != true) {
+                if (this.willChange.originX != true || +this.originX === +value) {
                     return;
                 }
                 this.setPropValue('origin', 'x', value);
@@ -418,7 +420,7 @@ export default {
                 }
             },
             set (value) {
-                if (this.willChange.originY != true) {
+                if (this.willChange.originY != true || +this.originY === +value) {
                     return;
                 }
                 this.setPropValue('origin', 'y', value);

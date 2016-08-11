@@ -151,6 +151,8 @@ export default {
 
                     this.setClid(clid);
 
+                    console.log(`[drag start] ${this.clid}`);
+
                     this.dragStartFlag = true;
                     this.dragStartPos = {
                         x: event.clientX,
