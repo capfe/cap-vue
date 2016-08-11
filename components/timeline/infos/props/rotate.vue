@@ -4,13 +4,17 @@
     >
         <keyframe-control :layer="layer" :prop="prop"></keyframe-control>
         <span class="timeline-item-label2">
-            <c-number 
-                :value="+rotate.x.value" 
+            <c-number
+                :value="+rotate.x.value"
                 @on-change="changeX | debounce 300"
             ></c-number>
             <c-number
                 :value="+rotate.y.value"
                 @on-change="changeY | debounce 300"
+            ></c-number>
+            <c-number
+                :value="+rotate.z.value"
+                @on-change="changeZ | debounce 300"
             ></c-number>
         </span>
     </div>
@@ -66,7 +70,7 @@
                     return pkf
                 }
 
-                return this.layer[prop] || {x: {value:0, fx: 'linear'}, y: {value:0, fx: 'linear'}};
+                return this.layer[prop] || {x: {value:0, fx: 'linear'}, y: {value:0, fx: 'linear'}, z: {value:0, fx: 'linear'}};
             }
         },
 
@@ -91,6 +95,16 @@
                 const layerid = me.layer._id;
                 const prop = me.prop;
                 const key = 'y';
+                const index = me.project.frameIndex;
+                me.addKeyframe({ projectid, index, layerid, prop, key, value });
+            },
+
+            changeZ (value) {
+                const me = this;
+                const projectid = me.projectid;
+                const layerid = me.layer._id;
+                const prop = me.prop;
+                const key = 'z';
                 const index = me.project.frameIndex;
                 me.addKeyframe({ projectid, index, layerid, prop, key, value });
             }
