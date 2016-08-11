@@ -110,7 +110,6 @@ export default {
             return layer;
         },
         style () {
-            console.log(this.lid);
             return {
                 width: `${this.layer.size.x.value}px`,
                 height: `${this.layer.size.y.value}px`,
@@ -120,6 +119,7 @@ export default {
                             translateY(${this.layer.position.y.value}px)
                             rotateX(${this.layer.rotate.x.value}deg)
                             rotateY(${this.layer.rotate.y.value}deg)
+                            rotateZ(${this.layer.rotate.z.value}deg)
                             scaleX(${this.layer.scale.x.value})
                             scaleY(${this.layer.scale.y.value})`,
                 // borderWidth: `${this.layer.border.width.value}px`,
