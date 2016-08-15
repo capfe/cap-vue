@@ -12,7 +12,8 @@ import {
     LAYER_SHOW_TOGGLE,
     LAYER_PROPS_TOGGLE,
     LAYER_PARENT_CHANGE,
-    LAYER_NAME_CHANGE
+    LAYER_NAME_CHANGE,
+    LAYER_UPDATE
 } from 'store/mutation-types';
 import Vue from 'vue';
 
@@ -44,7 +45,7 @@ const mutations = {
 
     [LAYER_DVIEW_TOGGLE] (state, index) {
         const dview = state.all[index].statusDview;
-        
+
         for (let layer of state.all) {
             if (!dview) {
                 layer.statusView = false;
@@ -81,6 +82,9 @@ const mutations = {
         state.all[index].name = name;
     },
 
+    [LAYER_UPDATE] (state, layers) {
+        state.all = layers;
+    },
 };
 
 export default {

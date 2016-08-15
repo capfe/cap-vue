@@ -246,7 +246,7 @@ import CapInput from '../common/Input.vue';
 
 import {
     addKeyframe,
-    originValueChange
+    updateLayer
 } from 'store/actions';
 
 export default {
@@ -258,19 +258,24 @@ export default {
         CapInput
     },
     methods: {
-        setOriginValue (category, type, value) {
-            const me = this;
-            const lid = me.clid;
+        setOriginValue (key, value) {
+            const lid = this.clid;
+            const projectid = this.projectid;
 
             if (!lid) {
                 return;
             }
 
-            if (type != "color") {
+            if (key.toLowerCase().indexOf('color') < 0) {
                 value = +value;
             }
 
-            this.originValueChange(value, lid, category, type);
+            this.updateLayer({
+                projectid: projectid,
+                layerid: lid,
+                key: key,
+                value: value
+            });
         }
     },
     data () {
@@ -287,7 +292,7 @@ export default {
     },
     computed: {
         curLayer () {
-            let layers = this.originlayers;
+            let layers = this.layers;
             let keyframes = this.allKeyframes;
             let curFrameIndex = this.curFrameIndex;
             let layer = {};
@@ -297,11 +302,10 @@ export default {
             }
 
             for (var index in layers) {
-                if (lid == layers[+index].id) {
+                if (lid == layers[+index]._id) {
                     layer = Object.assign({}, layers[+index]);
                 }
             }
-
             if (layer) {
                 for (var i = 0; i <= curFrameIndex; i++) {
                     let curKeyframe = keyframes[i];
@@ -315,64 +319,80 @@ export default {
                     Object.assign(layer, curLayer);
                 }
             }
-
+            console.log(`[inspector curLayer] ${this.clid}`);
             return layer;
         },
         borderWidth: {
             get () {
-                return this.curLayer && this.curLayer.border.width.value;
+                try {
+                    return this.curLayer.css.borderWidth.value;
+                }
+                catch (e) {
+                    return 0;
+                }
             },
             set (value) {
                 if (this.willChange.borderWidth != true) {
                     return;
                 }
-                this.setOriginValue('border', 'width', value);
+                this.setOriginValue('borderWidth', value);
             }
         },
         borderRadius: {
             get () {
-                return this.curLayer && this.curLayer.border.radius.value;
+                try {
+                    return this.curLayer.css.borderRadius.value;
+                }
+                catch (e) {
+                    return 0;
+                }
             },
             set (value) {
                 if (this.willChange.borderRadius != true) {
                     return;
                 }
-                this.setOriginValue('border', 'radius', value);
+                this.setOriginValue('borderRadius', value);
             }
         },
         borderColor: {
             get () {
-                return this.curLayer && this.curLayer.border.color.value;
+                try {
+                    return this.curLayer.css.borderColor.value;
+                }
+                catch (e) {
+                    return '#fff';
+                }
             },
             set (value) {
                 if (this.willChange.borderColor != true) {
                     return;
                 }
-                this.setOriginValue('border', 'color', value);
+                this.setOriginValue('borderColor', value);
             }
         },
         borderStyle: {
             get () {
-                return this.curLayer && this.curLayer.border.style.value;
+                return this.curLayer && this.curLayer.css.borderStyle.value;
             },
             set (value) {
                 if (this.willChange.borderColor != true) {
                     return;
                 }
-                this.setOriginValue('border', 'style', value);
+                this.setOriginValue('borderStyle', value);
             }
         }
     },
     vuex: {
         getters: {
             curFrameIndex: ({ project }) => project.common.frameIndex,
-            originlayers: ({ project }) => project.common.layers,
+            layers: ({ layers }) => layers.all,
             allKeyframes: ({ keyframes }) => keyframes.all,
-            clid: ({ project }) => project.common.clid
+            clid: ({ project }) => project.common.clid,
+            projectid: ({ project }) => project.id
         },
         actions: {
             addKeyframe,
-            originValueChange
+            updateLayer
         }
     }
 };
