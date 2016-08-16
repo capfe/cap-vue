@@ -56,14 +56,14 @@
                     <label>样式</label>
                     <select name='' id=''>
                         <option value=''>无</option>
-                        <option value=''>实线</option>
-                        <option value=''>双线</option>
-                        <option value=''>点线</option>
-                        <option value=''>虚线</option>
-                        <option value=''>凹线</option>
-                        <option value=''>凸线</option>
-                        <option value=''>内嵌</option>
-                        <option value=''>外嵌</option>
+                        <option value='solid'>实线</option>
+                        <option value='double'>双线</option>
+                        <option value='dotted'>点线</option>
+                        <option value='dashed'>虚线</option>
+                        <option value='groove'>凹线</option>
+                        <option value='ridge'>凸线</option>
+                        <option value='inset'>内嵌</option>
+                        <option value='outset'>外嵌</option>
                     </select>
                 </div>
                 <div class='cap-inspector-panel-item' style='display:none;'>
@@ -80,7 +80,7 @@
                     <cap-input
                         title='颜色'
                         :value.sync='borderColor'
-                        type='color'
+                        type='text'
                         change-name='borderColor'
                     ></cap-input>
                 </div>
@@ -367,6 +367,7 @@ export default {
                 if (this.willChange.borderColor != true) {
                     return;
                 }
+
                 this.setOriginValue('borderColor', value);
             }
         },
