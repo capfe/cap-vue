@@ -319,7 +319,7 @@ export default {
                     Object.assign(layer, curLayer);
                 }
             }
-            console.log(`[inspector curLayer] ${this.clid}`);
+
             return layer;
         },
         borderWidth: {
@@ -328,7 +328,7 @@ export default {
                     return this.curLayer.css.borderWidth.value;
                 }
                 catch (e) {
-                    return 0;
+                    return;
                 }
             },
             set (value) {
@@ -344,7 +344,7 @@ export default {
                     return this.curLayer.css.borderRadius.value;
                 }
                 catch (e) {
-                    return 0;
+                    return;
                 }
             },
             set (value) {
@@ -360,7 +360,7 @@ export default {
                     return this.curLayer.css.borderColor.value;
                 }
                 catch (e) {
-                    return '#fff';
+                    return;
                 }
             },
             set (value) {
@@ -373,7 +373,12 @@ export default {
         },
         borderStyle: {
             get () {
-                return this.curLayer && this.curLayer.css.borderStyle.value;
+                try {
+                    return this.curLayer.css.borderStyle.value;
+                }
+                catch (e) {
+                    return;
+                }
             },
             set (value) {
                 if (this.willChange.borderColor != true) {

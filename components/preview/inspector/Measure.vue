@@ -211,7 +211,7 @@ export default {
             if (!clid) {
                 return;
             }
-            console.log(`[inspector set prop] ${clid}`);
+
             value = +value;
             me.addKeyframe({
                 projectid: projectid,
@@ -266,30 +266,38 @@ export default {
                     Object.assign(layer, curLayer);
                 }
             }
-            console.log(`[inspector curLayer] ${this.clid}`);
+
             return layer;
         },
         x: {
             get () {
-                return this.curLayer && this.curLayer.position.x.value;
+                try {
+                    return this.curLayer.position.x.value;
+                }
+                catch (e) {
+                    return;
+                }
             },
             set (value) {
                 if (this.willChange.x != true || +this.x === +value) {
                     return;
                 }
-                console.log(`[inspector change x] ${this.clid} ${value}`);
                 this.setPropValue('position', 'x', value);
             }
         },
         y: {
             get () {
-                return this.curLayer && this.curLayer.position.y.value;
+                try {
+                    return this.curLayer.position.y.value;
+                }
+                catch (e) {
+                    return;
+                }
             },
             set (value) {
                 if (this.willChange.y != true || +this.y === +value) {
                     return;
                 }
-                console.log(`[inspector change y] ${this.clid} ${value}`);
                 this.setPropValue('position', 'y', value);
             }
         },
@@ -299,7 +307,7 @@ export default {
                     return this.curLayer.size.x.value;
                 }
                 catch (e) {
-                    return 100;
+                    return;
                 }
             },
             set (value) {
@@ -315,7 +323,7 @@ export default {
                     return this.curLayer.size.y.value;
                 }
                 catch (e) {
-                    return 100;
+                    return;
                 }
             },
             set (value) {
@@ -327,7 +335,12 @@ export default {
         },
         scaleX: {
             get () {
-                return this.curLayer && this.curLayer.scale.x.value;
+                try {
+                    return this.curLayer.scale.x.value;
+                }
+                catch (e) {
+                    return;
+                }
             },
             set (value) {
                 if (this.willChange.scaleX != true || +this.scaleX === +value) {
@@ -339,7 +352,12 @@ export default {
         },
         scaleY: {
             get () {
-                return this.curLayer && this.curLayer.scale.y.value;
+                try {
+                    return this.curLayer.scale.y.value;
+                }
+                catch (e) {
+                    return;
+                }
             },
             set (value) {
                 if (this.willChange.scaleY != true || +this.scaleY === +value) {
@@ -350,7 +368,12 @@ export default {
         },
         rotateX: {
             get () {
-                return this.curLayer && this.curLayer.rotate.x.value;
+                try {
+                    return this.curLayer.rotate.x.value;
+                }
+                catch (e) {
+                    return;
+                }
             },
             set (value) {
                 if (this.willChange.rotateX != true || +this.rotateX === +value) {
@@ -361,7 +384,12 @@ export default {
         },
         rotateY: {
             get () {
-                return this.curLayer && this.curLayer.rotate.y.value;
+                try {
+                    return this.curLayer.rotate.y.value;
+                }
+                catch (e) {
+                    return;
+                }
             },
             set (value) {
                 if (this.willChange.rotateY != true || +this.rotateY === +value) {
@@ -376,7 +404,7 @@ export default {
                     return this.curLayer.rotate.z.value;
                 }
                 catch (e) {
-                    return 0;
+                    return;
                 }
             },
             set (value) {
@@ -400,7 +428,7 @@ export default {
                     return this.curLayer.origin.x.value;
                 }
                 catch (e) {
-                    return 0;
+                    return;
                 }
             },
             set (value) {
@@ -416,7 +444,7 @@ export default {
                     return this.curLayer.origin.y.value;
                 }
                 catch (e) {
-                    return 0;
+                    return;
                 }
             },
             set (value) {

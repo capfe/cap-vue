@@ -151,8 +151,6 @@ export default {
 
                     this.setClid(clid);
 
-                    console.log(`[drag start] ${this.clid}`);
-
                     this.dragStartFlag = true;
                     this.dragStartPos = {
                         x: event.clientX,
@@ -178,8 +176,9 @@ export default {
                         x: this.curLayerX,
                         y: this.curLayerY
                     };
-                    break
+                    break;
                 default:
+                    this.setClid('');
                     break;
             }
         },
