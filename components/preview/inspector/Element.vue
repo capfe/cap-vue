@@ -365,6 +365,74 @@ export default {
                 }
                 this.setPropValue('opacity', null, value);
             }
+        },
+        shadowX: {
+            get () {
+                try {
+                    return this.curLayer.css.shadowX.value;
+                }
+                catch (e) {
+                    return;
+                }
+            },
+            set (value) {
+                if (this.willChange.shadowX != true) {
+                    return;
+                }
+
+                this.setOriginValue('shadowX', value);
+            }
+        },
+        shadowY: {
+            get () {
+                try {
+                    return this.curLayer.css.shadowY.value;
+                }
+                catch (e) {
+                    return;
+                }
+            },
+            set (value) {
+                if (this.willChange.shadowY != true) {
+                    return;
+                }
+
+                this.setOriginValue('shadowY', value);
+            }
+        },
+        shadowBlur: {
+            get () {
+                try {
+                    return this.curLayer.css.shadowBlur.value;
+                }
+                catch (e) {
+                    return;
+                }
+            },
+            set (value) {
+                if (this.willChange.shadowBlur != true) {
+                    return;
+                }
+
+                this.setOriginValue('shadowBlur', value);
+            }
+        },
+        shadowColor: {
+            get () {
+                try {
+                    return this.curLayer.css.shadowColor.value;
+                }
+                catch (e) {
+                    return;
+                }
+            },
+            set (value) {
+                if (this.willChange.shadowColor != true) {
+                    return;
+                }
+
+                this.setOriginValue('shadowColor', value);
+            }
         }
     }
 };
