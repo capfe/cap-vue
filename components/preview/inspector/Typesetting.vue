@@ -154,11 +154,10 @@
 </template>
 
 <script>
-import Input from "../common/Input.vue";
+import BaseInspector from './BaseInspector';
 
 export default {
-    components: {
-        capInput: Input
-    }
+    mixins: [BaseInspector],
+    computed: {}
 };
 </script>
