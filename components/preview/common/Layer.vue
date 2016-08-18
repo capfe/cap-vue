@@ -44,6 +44,7 @@
             <!--skew: !!layer.skew.x.value}} !!layer.skew.y.value}}-->
             border: {{layer.css.borderWidth.value}}px {{layer.css.borderStyle.value}} {{layer.css.borderColor.value}}
             borderRadius: {{layer.css.borderRadius.value}}
+            opacity: {{layer.opacity.value}}%
         </div>
         <cap-control-layer v-show="lid == this.clid"></cap-control-layer>
         <div class="origin-style" v-show="lid == this.clid" :style="originStyle"></div>
@@ -126,8 +127,8 @@ export default {
                 borderWidth: `${this.layer.css.borderWidth.value}px`,
                 borderRadius: `${this.layer.css.borderRadius.value}px`,
                 borderColor: `${this.layer.css.borderColor.value}`,
-                borderStyle: `${this.layer.css.borderStyle.value}`
-
+                borderStyle: `${this.layer.css.borderStyle.value}`,
+                opacity: `${this.layer.opacity.value/100}`
             }
         },
         originStyle () {

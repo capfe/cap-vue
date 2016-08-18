@@ -92,9 +92,12 @@
             </header>
             <div class='cap-inspector-panel-row'>
                 <div class='cap-inspector-panel-item'>
-                    <label for=''>不透明度</label>
-                    <input type='range' max=100 min=0 value=100>
-                    <input type='number' max=100 min=0 value=100>
+                    <cap-input
+                        title='不透明度'
+                        :value.sync='opacity'
+                        type='number'
+                        change-name='opacity'
+                    ></cap-input>
                 </div>
             </div>
             <div class='cap-inspector-panel-row'>
@@ -150,9 +153,9 @@
                 <div class='cap-inspector-panel-item'>
                     <cap-input
                         title='颜色'
-                        :value.sync='borderColor'
-                        type='color'
-                        change-name='borderColor'
+                        :value.sync='shadowColor'
+                        type='text'
+                        change-name='shadowColor'
                     ></cap-input>
                 </div>
             </div>
@@ -165,56 +168,81 @@
                 <div class='cap-inspector-panel-item'>
                     <label>应用模式</label>
                     <select name='' id=''>
-                        <option value=''>前景</option>
-                        <option value=''>背景</option>
+                        <option value="background">前景</option>
+                        <option value='foreground'>背景</option>
                     </select>
                 </div>
             </div>
             <div class='cap-inspector-panel-row'>
                 <div class='cap-inspector-panel-item'>
-                    <label for=''>模糊度</label>
-                    <input type='range' max=20.0 min=0 value=0.00>
-                    <input type='number' max=20.0 min=0 value=0.00>
+                    <cap-input
+                        title='模糊度'
+                        :value.sync='filterBlur'
+                        type='number'
+                        change-name='filterBlur'
+                        :options-readonly=true
+                        :options-value=0
+                        :options='[{title: "px", value: 0}]'
+                    ></cap-input>
+                </div>
+                <div class='cap-inspector-panel-item'>
+                    <cap-input
+                        title='棕褐色'
+                        :value.sync='filterBlur'
+                        type='number'
+                        change-name='filterBlur'
+                        :options-readonly=true
+                        :options-value=0
+                        :options='[{title: "px", value: 0}]'
+                    ></cap-input>
                 </div>
             </div>
             <div class='cap-inspector-panel-row'>
                 <div class='cap-inspector-panel-item'>
-                    <label for=''>棕褐色</label>
-                    <input type='range' max=100 min=0 value=0>
-                    <input type='number' max=100 min=0 value=0>
+                    <cap-input
+                        title='饱和度'
+                        :value.sync='filterBlur'
+                        type='number'
+                        change-name='filterBlur'
+                        :options-readonly=true
+                        :options-value=0
+                        :options='[{title: "px", value: 0}]'
+                    ></cap-input>
+                </div>
+                <div class='cap-inspector-panel-item'>
+                    <cap-input
+                        title='色调'
+                        :value.sync='filterBlur'
+                        type='number'
+                        change-name='filterBlur'
+                        :options-readonly=true
+                        :options-value=0
+                        :options='[{title: "px", value: 0}]'
+                    ></cap-input>
                 </div>
             </div>
             <div class='cap-inspector-panel-row'>
                 <div class='cap-inspector-panel-item'>
-                    <label for=''>饱和度</label>
-                    <input type='range' max=11 min=0 value=1.0>
-                    <input type='number' max=11 min=0 value=1.0>
+                    <cap-input
+                        title='亮度'
+                        :value.sync='filterBlur'
+                        type='number'
+                        change-name='filterBlur'
+                        :options-readonly=true
+                        :options-value=0
+                        :options='[{title: "px", value: 0}]'
+                    ></cap-input>
                 </div>
-            </div>
-            <div class='cap-inspector-panel-row'>
                 <div class='cap-inspector-panel-item'>
-                    <label for=''>色调</label>
-                    <input type='range' max=360 min=0 value=0>
-                    <input type='number' max=360 min=0 value=0>
-                </div>
-            </div>
-            <div class='cap-inspector-panel-row'>
-                <div class='cap-inspector-panel-item'>
-                    <label for=''>亮度</label>
-                    <input type='range' max=400 min=0 value=100>
-                    <input type='number' max=400 min=0 value=100>
-                </div>
-            </div>
-            <div class='cap-inspector-panel-row'>
-                <div class='cap-inspector-panel-item'>
-                    <label for=''>对比度</label>
-                    <input type='range' max=11 min=0 value=1 value=1.0>
-                    <input type='number' max=11 min=0 value=1 value=1.0>
-                </div>
-            </div>
-            <div class='cap-inspector-panel-row'>
-                <div class='cap-inspector-panel-item'>
-                    <a href='javascript:void(0);' class='cap-inspector-panel-btn'>还原默认设置</a>
+                    <cap-input
+                        title='对比度'
+                        :value.sync='filterBlur'
+                        type='number'
+                        change-name='filterBlur'
+                        :options-readonly=true
+                        :options-value=0
+                        :options='[{title: "px", value: 0}]'
+                    ></cap-input>
                 </div>
             </div>
         </section>
@@ -224,16 +252,26 @@
             </header>
             <div class='cap-inspector-panel-row'>
                 <div class='cap-inspector-panel-item'>
-                    <label for=''>深度</label>
-                    <input type='range' max=100 min=0>
-                    <input type='number' max=100 min=0>
+                    <cap-input
+                        title='深度'
+                        :value.sync='reflectionDepth'
+                        type='number'
+                        change-name='reflectionDepth'
+                        :options-readonly=true
+                        :options-value=0
+                        :options='[{title: "px", value: 0}]'
+                    ></cap-input>
                 </div>
-            </div>
-            <div class='cap-inspector-panel-row'>
                 <div class='cap-inspector-panel-item'>
-                    <label for=''>偏移</label>
-                    <input type='range' max=100 min=0>
-                    <input type='number' max=100 min=0>
+                    <cap-input
+                        title='偏移'
+                        :value.sync='reflectionOffset'
+                        type='number'
+                        change-name='reflectionOffset'
+                        :options-readonly=true
+                        :options-value=0
+                        :options='[{title: "px", value: 0}]'
+                    ></cap-input>
                 </div>
             </div>
         </section>
@@ -310,6 +348,22 @@ export default {
                     return;
                 }
                 this.setOriginValue('borderStyle', value);
+            }
+        },
+        opacity: {
+            get () {
+                try {
+                    return this.curLayer.opacity.value;
+                }
+                catch (e) {
+                    return;
+                }
+            },
+            set (value) {
+                if (this.willChange.opacity != true) {
+                    return;
+                }
+                this.setPropValue('opacity', null, value);
             }
         }
     }

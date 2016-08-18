@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import CapInput from '../common/Input.vue';
 
 import {
@@ -11,6 +10,11 @@ export default {
     props: ['inspector'],
     components: {
         CapInput
+    },
+    data () {
+        return {
+            willChange: []
+        }
     },
     methods: {
         setPropValue (category, type, value) {
