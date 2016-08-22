@@ -23,9 +23,7 @@
 
 <template>
     <div class='cap-scene'
-        @mousemove='drag'
         @mousedown='dragStart'
-        @mouseup='dragEnd'
         >
         <div class="cap-scene-container">
             <cap-layer v-for="layer in layers"
