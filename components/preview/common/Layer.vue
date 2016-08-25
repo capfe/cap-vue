@@ -69,6 +69,28 @@ export default {
             console.log('watch imgSrc')
         }
     },
+    methods: {
+        getValue (category, key) {
+            let value;
+            try {
+                if (!key) {
+                    value = this.layer[category].value;
+                }
+                else {
+                    value = this.layer[category][key].value;
+                }
+            } catch (e) {
+                if (key.toLowerCase().indexOf('color') < 0) {
+                    value = 0;
+                }
+                else {
+                    value = '#fff';
+                }
+            }
+
+            return value;
+        }
+    },
     computed: {
         imgSrc () {
             const srcid = this.layer.sourceid;
@@ -114,23 +136,23 @@ export default {
         },
         style () {
             return {
-                width: `${this.layer.size.x.value}px`,
-                height: `${this.layer.size.y.value}px`,
+                width: `${this.getValue('size', 'x')}px`,
+                height: `${this.getValue('size', 'y')}px`,
                 background: `url(${this.imgSrc}) 0% 0% / cover no-repeat`,
                 transformOrigin: `0px 0px`,
-                transform: `translateX(${this.layer.position.x.value}px)
-                            translateY(${this.layer.position.y.value}px)
-                            rotateX(${this.layer.rotate.x.value}deg)
-                            rotateY(${this.layer.rotate.y.value}deg)
-                            rotateZ(${this.layer.rotate.z.value}deg)
-                            scaleX(${this.layer.scale.x.value})
-                            scaleY(${this.layer.scale.y.value})`,
-                borderWidth: `${this.layer.css.borderWidth.value}px`,
-                borderRadius: `${this.layer.css.borderRadius.value}px`,
-                borderColor: `${this.layer.css.borderColor.value}`,
-                borderStyle: `${this.layer.css.borderStyle.value}`,
-                opacity: `${this.layer.opacity.value/100}`,
-                boxShadow: `${this.layer.css.shadowX.value}px ${this.layer.css.shadowY.value}px ${this.layer.css.shadowBlur.value}px ${this.layer.css.shadowColor.value}`
+                transform: `translateX(${this.getValue('position', 'x')}px)
+                            translateY(${this.getValue('position', 'y')}px)
+                            rotateX(${this.getValue('rotate', 'x')}deg)
+                            rotateY(${this.getValue('rotate', 'y')}deg)
+                            rotateZ(${this.getValue('rotate', 'z')}deg)
+                            scaleX(${this.getValue('scale', 'x')})
+                            scaleY(${this.getValue('scale', 'y')})`,
+                borderWidth: `${this.getValue('css', 'borderWidth')}px`,
+                borderRadius: `${this.getValue('css', 'borderRadius')}px`,
+                borderColor: `${this.getValue('css', 'borderColor')}`,
+                borderStyle: `${this.getValue('css', 'borderStyle')}`,
+                opacity: `${this.getValue('opacity')/100}`,
+                boxShadow: `${this.getValue('css', 'shadowX')}px ${this.getValue('css', 'shadowY')}px ${this.getValue('css', 'shadowBlur')}px ${this.getValue('css', 'shadowColor')}`
             }
         },
         originStyle () {
