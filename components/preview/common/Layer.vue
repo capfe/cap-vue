@@ -1,10 +1,10 @@
 <style lang='less'>
-    .cap-layer {
-        background-color: #eeff00;
+    .cap-layer-outer {
         position: absolute;
         user-select: none;
         cursor: default;
     }
+
     .origin-style {
         position: absolute;
         width: 4px;
@@ -28,28 +28,35 @@
 </style>
 
 <template>
-    <div class="cap-layer"
-        data-draggable="layer"
-        :style="style"
-        :data-lid="lid">
-        <div class="label">
-            lid: {{lid}}
-            <br>
-            x: {{layer.position.x.value}}
-            y: {{layer.position.y.value}}
-            width: {{layer.size.x.value}}
-            height: {{layer.size.y.value}}
-            rotate: {{layer.rotate.x.value}} {{layer.rotate.y.value}} {{layer.rotate.z.value}}
-            scale: {{layer.scale.x.value}} {{layer.scale.y.value}}
-            <!--skew: !!layer.skew.x.value}} !!layer.skew.y.value}}-->
-            border: {{layer.css.borderWidth.value}}px {{layer.css.borderStyle.value}} {{layer.css.borderColor.value}}
-            borderRadius: {{layer.css.borderRadius.value}}
-            opacity: {{layer.opacity.value}}%
-            <!-- boxShadow: {{layer.css.shadowX.value}}px {{layer.css.shadowY.value}}px {{layer.css.shadowBlur.value}}px #{{layer.css.shadowColor.value}} -->
+    <div class="cap-layer-outer"
+        :style="outerStyle"
+    >
+        <div class="cap-layer"
+            :style="layerStyle"
+            data-draggable="layer"
+            :data-lid="lid"
+        >
+            <div class="label">
+                lid: {{lid}}
+                <br>
+                x: {{layer.position.x.value}}
+                y: {{layer.position.y.value}}
+                width: {{layer.size.x.value}}
+                height: {{layer.size.y.value}}
+                rotate: {{layer.rotate.x.value}} {{layer.rotate.y.value}} {{layer.rotate.z.value}}
+                scale: {{layer.scale.x.value}} {{layer.scale.y.value}}
+                <!--skew: !!layer.skew.x.value}} !!layer.skew.y.value}}-->
+                border: {{layer.css.borderWidth.value}}px {{layer.css.borderStyle.value}} {{layer.css.borderColor.value}}
+                borderRadius: {{layer.css.borderRadius.value}}
+                opacity: {{layer.opacity.value}}%
+                <!-- boxShadow: {{layer.css.shadowX.value}}px {{layer.css.shadowY.value}}px {{layer.css.shadowBlur.value}}px #{{layer.css.shadowColor.value}} -->
+            </div>
+
+            <div class="origin-style" v-show="lid == this.clid" :style="originStyle"></div>
         </div>
         <cap-control-layer v-show="lid == this.clid"></cap-control-layer>
-        <div class="origin-style" v-show="lid == this.clid" :style="originStyle"></div>
     </div>
+
 
 </template>
 
@@ -134,11 +141,22 @@ export default {
             }
             return layer;
         },
-        style () {
+        layerStyle () {
             return {
                 width: `${this.getValue('size', 'x')}px`,
                 height: `${this.getValue('size', 'y')}px`,
                 background: `url(${this.imgSrc}) 0% 0% / cover no-repeat`,
+                borderWidth: `${this.getValue('css', 'borderWidth')}px`,
+                borderRadius: `${this.getValue('css', 'borderRadius')}px`,
+                borderColor: `${this.getValue('css', 'borderColor')}`,
+                borderStyle: `${this.getValue('css', 'borderStyle')}`,
+
+                boxShadow: `${this.getValue('css', 'shadowX')}px ${this.getValue('css', 'shadowY')}px ${this.getValue('css', 'shadowBlur')}px ${this.getValue('css', 'shadowColor')}`
+            }
+        },
+        outerStyle () {
+            return {
+                opacity: `${this.getValue('opacity')/100}`,
                 transformOrigin: `0px 0px`,
                 transform: `translateX(${this.getValue('position', 'x')}px)
                             translateY(${this.getValue('position', 'y')}px)
@@ -146,13 +164,7 @@ export default {
                             rotateY(${this.getValue('rotate', 'y')}deg)
                             rotateZ(${this.getValue('rotate', 'z')}deg)
                             scaleX(${this.getValue('scale', 'x')})
-                            scaleY(${this.getValue('scale', 'y')})`,
-                borderWidth: `${this.getValue('css', 'borderWidth')}px`,
-                borderRadius: `${this.getValue('css', 'borderRadius')}px`,
-                borderColor: `${this.getValue('css', 'borderColor')}`,
-                borderStyle: `${this.getValue('css', 'borderStyle')}`,
-                opacity: `${this.getValue('opacity')/100}`,
-                boxShadow: `${this.getValue('css', 'shadowX')}px ${this.getValue('css', 'shadowY')}px ${this.getValue('css', 'shadowBlur')}px ${this.getValue('css', 'shadowColor')}`
+                            scaleY(${this.getValue('scale', 'y')})`
             }
         },
         originStyle () {
